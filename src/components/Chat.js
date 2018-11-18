@@ -1,0 +1,182 @@
+import React, { Component } from 'react';
+import './Chat.css';
+import * as utils from '../utils';
+
+export default class Chat extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      text: '',
+      photoShown: false
+    };
+  }
+
+  render() {
+    const photosLen = this.props.state.user.photos.length;
+    const photosClassName = utils.classNames({
+      Chat__photos: true,
+      [photosLen > 2 ? `Chat__photos_many` : 'Chat__photos_two']: photosLen > 1
+    });
+
+    const sendBtnClassName = utils.classNames({
+      ['Chat__send-from__send-button']: true,
+      active: this.state.text.trim().length > 0
+    });
+
+    return (
+      <div className="Chat__wrap">
+        {this._renderShownPhoto()}
+        <div className="Chat__history-wrap">
+          <div className="Chat__history">
+            <div>
+              <div className="Chat__name">{this.props.state.user.name}</div>
+              <div className="Chat__caption">{this._makeDescription()}</div>
+            </div>
+            <div className={photosClassName}>
+              {this._renderPhotos()}
+            </div>
+            <div className="Chat_messages">
+              <div className="Chat__message system inbox">
+                <div className="Chat__message__text">Нет времени объяснять, давай поскорее встретимся.</div>
+              </div>
+              {this._renderMessages()}
+            </div>
+          </div>
+        </div>
+        <div className="Chat__send-from">
+          <div className="Chat__send-from__cont">
+            <div className="Chat__send-from__input_wrap">
+              <input
+                type="text"
+                placeholder="Ваше сообщение.."
+                className="Chat__send-from__input"
+                value={this.state.text}
+                onChange={(e) => this.setState({text: e.target.value})}
+                onKeyDown={this._formKeyDown}
+              />
+              <div
+                className={sendBtnClassName}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  this._sendBtnDidPress();
+                }}
+              >
+                <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M5.733 12a4.985 4.985 0 0 1-1.94-2.358C3.134 7.98 2.667 6.6 2.392 5.488c-.515-2.077-.577-2.579.15-3.559.665-.894 1.61-1.062 2.559-.843.455.105.942.307 1.58.63 1.87.944 10.107 5.615 12.504 7.07.925.56 1.22.747 1.561 1.006.781.592 1.256 1.204 1.255 2.21 0 1.004-.475 1.615-1.256 2.207-.341.259-.636.445-1.56 1.005-2.327 1.41-10.658 6.138-12.504 7.07-.638.323-1.125.525-1.58.63-.949.219-1.894.05-2.558-.843-.728-.98-.666-1.482-.151-3.559.275-1.112.742-2.491 1.403-4.154A4.985 4.985 0 0 1 5.733 12zm-.102 3.102c-.63 1.586-1.07 2.884-1.32 3.895-.495 1.999-.495 2.499 1.484 1.5 1.98-1 10.383-5.792 12.37-6.997 2.474-1.5 2.474-1.5 0-3-2.103-1.276-10.39-5.997-12.37-6.996-1.98-1-1.98-.5-1.484 1.5.25 1.01.69 2.308 1.32 3.894a2.975 2.975 0 0 0 2.305 1.847c3.52.546 5.281.964 5.281 1.255 0 .29-1.76.709-5.28 1.254a2.975 2.975 0 0 0-2.306 1.848z" fill="#9DA0A3" fillRule="nonzero"/></svg>
+              </div>
+            </div>
+            <div className="Chat__send-from__skip_button" onClick={this.props.skip}>
+              <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M2.591 10.177C3.235 5.557 7.202 2 12 2a9.49 9.49 0 0 1 7.828 4.116 1.992 1.992 0 0 0-.742.47l-.809.808A7.503 7.503 0 0 0 4.667 9.92l.626-.626a1 1 0 0 1 1.414 1.414l-2.5 2.5a1 1 0 0 1-1.414 0l-2.5-2.5a1 1 0 0 1 1.414-1.414l.884.884zm18.87 2.198C21.018 17.21 16.95 21 12 21a9.494 9.494 0 0 1-8.104-4.54 1.99 1.99 0 0 0 1.018-.546l.617-.617a7.501 7.501 0 0 0 13.906-2.82l-.73.73a1 1 0 0 1-1.414-1.414l2.5-2.5a1 1 0 0 1 1.414 0l2.5 2.5a1 1 0 0 1-1.414 1.414l-.833-.832z" fill="#9DA0A3" fillRule="nonzero"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  _renderPhotos() {
+    return this.props.state.user.photos.map((photo, i) => {
+      return (
+        <div
+          key={i}
+          className="Chat__photo"
+          style={{backgroundImage: `url(${photo})`}}
+          onClick={() => this._showPhoto(photo)}
+        />
+      )
+    });
+  }
+
+  _renderMessages() {
+    return this.props.state.messages.map((message, i) => {
+      const className = utils.classNames({
+        Chat__message: true,
+        inbox: message.isInbox,
+        outbox: !message.isInbox
+      });
+      return (
+        <div
+          key={i}
+          className={className}
+        >
+          <div className="Chat__message__text">{message.text}</div>
+        </div>
+      )
+    });
+  }
+
+  _sendBtnDidPress = () => {
+    if (this.sending) {
+      return;
+    }
+    const text = this.state.text.trim();
+    if (!text) {
+      return;
+    }
+    this.sending = true;
+
+    this.props.sendMessage(text).then(() => {
+      this.setState({text: ''});
+      Chat.scrollToBottom(true);
+      this.sending = false;
+    }).catch(() => {
+      this.sending = false;
+    });
+  };
+
+  _makeDescription() {
+    const user = this.props.state.user;
+
+    let res = [];
+    const bdExp = String(user.bdate).split('.');
+    if (bdExp.length === 3) {
+      res.push(utils.getUsrAge(Date.parse(`${bdExp[2]}-${bdExp[1]}-${bdExp[0]}`) / 1000) + ' лет');
+    }
+
+    if (user.city) {
+      res.push(user.city);
+    }
+
+    if (user.education) {
+      res.push(user.education);
+    }
+
+    return res.join(', ');
+  }
+
+  _renderShownPhoto() {
+    if (!this.state.photoShown) {
+      return null;
+    }
+
+    return (
+      <div className="Chat__photo-view" onClick={() => this.setState({photoShown: false})}>
+        <div className="Chat__photo-view-img" style={{backgroundImage: `url(${this.state.photoShown})`}} />
+      </div>
+    )
+  }
+
+  _showPhoto(src) {
+    this.setState({photoShown: src});
+  }
+
+  static scrollToBottom(fast) {
+    const el = document.querySelector('.Chat__history');
+    if (!el) {
+      return;
+    }
+    const fn = () => el.scrollTop = el.scrollHeight;
+    if (fast) {
+      fn();
+    } else {
+      setTimeout(fn);
+    }
+  }
+
+  _formKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      this._sendBtnDidPress();
+    }
+  };
+}
