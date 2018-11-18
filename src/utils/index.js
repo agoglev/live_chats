@@ -130,3 +130,8 @@ export function gram(number, variants, skipNumber) {
   }
   return res;
 }
+
+export function availChatsStr(count) {
+  const pref = gram(count, ['Остался', 'Осталось', 'Осталось'], true);
+  return pref + ' ' + gram(count, ['чат', 'чата', 'чатов']);
+}

@@ -74,6 +74,10 @@
   justify-content: flex-start;
   padding-right: 64px;
 }
+.Chat__message.system {
+  justify-content: flex-start;
+  padding-right: 64px;
+}
 .Chat__message.outbox {
   padding-left: 64px;
 }
@@ -98,6 +102,11 @@
   background: #fff;
   color: rgba(0, 0, 0, 0.48);
   border: 1px dashed rgba(0, 0, 0, 0.16);
+}
+.Chat__message.system .Chat__message__text svg {
+  display: inline-block;
+  vertical-align: top;
+  opacity: 0.48;
 }
 .Chat__send-from {
   position: fixed;
@@ -180,6 +189,14 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+.Chat__photo__close {
+  background: url('../asset/close_40@2x.png') no-repeat center / contain;
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
 }
 .Chat__photo-view-img {
   width: 100%;

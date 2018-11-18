@@ -90,6 +90,11 @@
     padding-right: 64px;
   }
 
+  &.system {
+    justify-content: flex-start;
+    padding-right: 64px;
+  }
+
   &.outbox {
     padding-left: 64px;
   }
@@ -118,6 +123,12 @@
     background: #fff;
     color: rgba(0,0,0,0.48);
     border: 1px dashed rgba(0, 0, 0, 0.16);
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      opacity: 0.48;
+    }
   }
 }
 
@@ -212,6 +223,15 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+.Chat__photo__close {
+  background: url('../asset/close_40@2x.png') no-repeat center/contain;
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
 }
 
 .Chat__photo-view-img {

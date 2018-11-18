@@ -43,7 +43,7 @@ class App extends Component {
         <div className="App__header">
           <div className="App__header__content">
             <div className="App__header__logo">Рулетка</div>
-            {window.VkInfo.sex === 2 && !this.state.loadingPayments && <div className="App__header__balance">Осталось {utils.gram(this.state.availChats, ['чат', 'чата', 'чатов'])}</div>}
+            {window.VkInfo.sex === 2 && !this.state.loadingPayments && <div className="App__header__balance">{utils.availChatsStr(this.state.availChats)}</div>}
           </div>
         </div>
         {this._renderGetContent()}
@@ -271,6 +271,7 @@ class App extends Component {
       const messages = this.state.messages;
       messages.push({isInbox: true, text});
       this.setState({messages});
+      Chat.scrollToBottom(true);
     } else {
       api.method(api.methods.leave, { id: fromId });
     }
@@ -305,6 +306,7 @@ class App extends Component {
       payment.incrChats(count);
       const availChats = this.state.availChats + count;
       this.setState({availChats});
+      this._checkChats();
     }).catch((err) => {
       alert('Проишошла ошибка');
     });

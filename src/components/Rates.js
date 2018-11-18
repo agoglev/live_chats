@@ -8,7 +8,7 @@ export default class Rates extends Component {
     return (
       <div className="Status__wrap">
         <div className="Rates">
-          <div className="Rates__title">Осталось {utils.gram(this.props.state.availChats, ['чат', 'чата', 'чатов'])}</div>
+          <div className="Rates__title">{utils.availChatsStr(this.props.state.availChats)}</div>
           <div className="Rates__caption">Количество показывает, сколько раз ты можешь общаться с новыми людьми. Заходи каждый день<br/>и получай по {payment.FREE_CHATS} чатов. Или увеличь вручную.</div>
           <div className="Rates__items">
             {this._renderRates()}

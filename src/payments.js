@@ -23,7 +23,7 @@ export function getAvailableChats() {
         const day = new Date(parseInt(freeData.ts, 10)).getDate();
         if (day !== new Date().getDate()) {
           result += FREE_CHATS;
-          api.method('storage.set', {
+          api.vk('storage.set', {
             key: 'free_chats',
             value: JSON.stringify({ts: new Date().getTime(), chats: 0})
           });
