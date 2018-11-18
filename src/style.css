@@ -1,17 +1,16 @@
-body, input, textarea {
-  font-family: -apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
+body,
+input,
+textarea {
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif;
 }
-
 body {
   min-height: 100vh;
   padding: 0;
   margin: 0;
 }
-
 .Chat__wrap {
   display: flex;
 }
-
 .Status__wrap {
   display: flex;
   align-items: center;
@@ -21,7 +20,6 @@ body {
   padding-top: 48px;
   min-height: 100vh;
 }
-
 .Status__loading {
   max-width: 416px;
   width: 100%;
@@ -34,28 +32,23 @@ body {
   padding: 64px 16px;
   box-sizing: border-box;
   transition: background 150ms ease-in-out;
-
-  &.connecting {
-    background: #4dbf99;
-  }
-
-  &.leave {
-    background: #d96289;
-  }
 }
-
+.Status__loading.connecting {
+  background: #4dbf99;
+}
+.Status__loading.leave {
+  background: #d96289;
+}
 .Status__loading__icon {
   width: 96px;
   height: 96px;
-  background: url('./asset/state_loading_96@2x.png') no-repeat center/contain;
+  background: url('asset/state_loading_96@2x.png') no-repeat center / contain;
   animation: Status__loading__icon_anim 2s linear forwards infinite;
-
-  .Status__loading.leave & {
-    animation: none;
-    background-image: url('./asset/state_failure_96@2x.png');
-  }
 }
-
+.Status__loading.leave .Status__loading__icon {
+  animation: none;
+  background-image: url('asset/state_failure_96@2x.png');
+}
 @keyframes Status__loading__icon_anim {
   from {
     transform: rotate(0deg);
@@ -64,7 +57,6 @@ body {
     transform: rotate(360deg);
   }
 }
-
 .Status__loading__title {
   font-size: 19px;
   line-height: 24px;
@@ -72,14 +64,12 @@ body {
   margin-top: 24px;
   font-weight: bold;
 }
-
 .Status__loading__caption {
   font-size: 15px;
   line-height: 20px;
-  color: rgba(255,255,255,.72);
+  color: rgba(255, 255, 255, 0.72);
   margin-top: 4px;
 }
-
 .Status__button {
   color: #d96289;
   font-size: 15px;
@@ -91,8 +81,6 @@ body {
   margin-top: 16px;
   cursor: pointer;
 }
-
-
 .App__header {
   height: 48px;
   width: 100%;
@@ -104,7 +92,6 @@ body {
   z-index: 500;
   padding: 0 16px;
 }
-
 .App__header__content {
   width: 100%;
   max-width: 560px;
@@ -113,7 +100,6 @@ body {
   align-items: center;
   height: 100%;
 }
-
 .App__header__logo {
   font-size: 19px;
   line-height: 24px;
@@ -121,41 +107,35 @@ body {
   flex: 1;
   font-weight: bold;
 }
-
 .App__header__balance {
   color: #a8a8a8;
   font-size: 15px;
   line-height: 20px;
 }
-
 .Status__into {
   text-align: center;
 }
-
 .Status__into__icon {
   width: 144px;
   height: 144px;
   border-radius: 72px;
-  background: #ffaf40 url('./asset/logo_144@2x.png') no-repeat center/cover;
+  background: #ffaf40 url('asset/logo_144@2x.png') no-repeat center / cover;
   margin: 0 auto;
 }
-
 .Status__into__title {
   margin-top: 24px;
   font-size: 19px;
   font-weight: bold;
   line-height: 24px;
 }
-
 .Status__into__caption {
   font-size: 15px;
   line-height: 20px;
-  color: rgba(0,0,0,.48);
+  color: rgba(0, 0, 0, 0.48);
   max-width: 416px;
   width: 100%;
   margin: 4px auto 0;
 }
-
 .Status__into__button {
   font-size: 15px;
   font-weight: bold;
@@ -168,17 +148,14 @@ body {
   transition: all 150ms ease-in-out;
   display: inline-block;
   cursor: pointer;
-
-  &:hover {
-    opacity: 0.72;
-  }
-
-  &.loading {
-    pointer-events: none;
-    opacity: .64 !important;
-  }
-
-  &.failed {
-    background: #d96289;
-  }
+}
+.Status__into__button:hover {
+  opacity: 0.72;
+}
+.Status__into__button.loading {
+  pointer-events: none;
+  opacity: .64 !important;
+}
+.Status__into__button.failed {
+  background: #d96289;
 }

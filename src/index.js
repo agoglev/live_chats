@@ -21,7 +21,7 @@ window.VK.init(function() {
   console.log('WTF');
   window.VK.addCallback('onScrollTop', function(vkScrollPos, vkHeight, vkOffset){
     window.vkHeight = vkHeight;
-    //tils.updateVkFrameHeight();
+    utils.updateVkFrameHeight();
   });
 
   try {

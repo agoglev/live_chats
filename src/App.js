@@ -43,7 +43,7 @@ class App extends Component {
         <div className="App__header">
           <div className="App__header__content">
             <div className="App__header__logo">Рулетка</div>
-            {window.VkInfo.sex === 2 && !this.state.loadingPayments && <div className="App__header__balance">осталось {utils.gram(this.state.availChats, ['чат', 'чата', 'чатов'])}</div>}
+            {window.VkInfo.sex === 2 && !this.state.loadingPayments && <div className="App__header__balance">Осталось {utils.gram(this.state.availChats, ['чат', 'чата', 'чатов'])}</div>}
           </div>
         </div>
         {this._renderGetContent()}
@@ -92,7 +92,7 @@ class App extends Component {
         <div className="Status__into">
           <div className="Status__into__icon" />
           <div className="Status__into__title">Сыграй в рулетку!</div>
-          <div className="Status__into__caption">Общайся с незнакомыми людьми<br/>в режиме реального</div>
+          <div className="Status__into__caption">Рулетка соединяет с незнакомцами в чате. Ты либо заводишь диалог, либо ищешь следующего. Общайся, находи интересных людей и заряжайся позитивом!</div>
           <div className={buttonClassName} onClick={this._start}>{buttonText}</div>
         </div>
       </div>
@@ -141,7 +141,7 @@ class App extends Component {
     api.vk('photos.get', {
       album_id: 'profile',
       rev: 1,
-      count: 10,
+      count: 5,
       photo_sizes: 1
     }).then((resp) => {
       let photos = [];
