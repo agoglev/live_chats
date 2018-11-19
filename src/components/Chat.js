@@ -134,8 +134,7 @@ export default class Chat extends Component {
     let res = [];
     const bdExp = String(user.bdate).split('.');
     if (bdExp.length === 3) {
-      const age =
-      res.push(utils.getUsrAge(Date.parse(`${bdExp[2]}-${bdExp[1]}-${bdExp[0]}`) / 1000) + ' лет');
+      res.push(utils.getUsrAge(new Date(parseInt(bdExp[2], 10), parseInt(bdExp[1], 10) - 1, parseInt(bdExp[0], 10)) / 1000) + ' лет');
     }
 
     if (user.city) {

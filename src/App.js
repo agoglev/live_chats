@@ -92,7 +92,7 @@ class App extends Component {
         <div className="Status__into">
           <div className="Status__into__icon" />
           <div className="Status__into__title">Сыграй в рулетку!</div>
-          <div className="Status__into__caption">Рулетка соединяет с незнакомцами в чате. Ты либо заводишь диалог, либо ищешь следующего. Общайся, находи интересных людей и заряжайся позитивом!</div>
+          <div className="Status__into__caption">Рулетка соединяет с незнакомцами в чате. Ты&nbsp;либо заводишь диалог, либо ищешь следующего. Общайся, находи интересных людей и заряжайся позитивом!</div>
           <div className={buttonClassName} onClick={this._start}>{buttonText}</div>
         </div>
       </div>
@@ -133,6 +133,10 @@ class App extends Component {
   }
 
   _start = () => {
+    if (this.state.loadingPaymentsFailed) {
+      return this._loadPayments();
+    }
+
     if (window.VkInfo.sex === 2 && !this.state.availChats) {
       return this.setState({status: Status.payment});
     }

@@ -32,7 +32,9 @@ export const methods = {
 };
 
 export function vk(method, params = {}) {
-  params.test_mode = 1;
+  if (window.AppId === 6757020) {
+    params.test_mode = 1;
+  }
   return new Promise((resolve, reject) => {
     window.VK.api(method, params, (resp) => {
       if (resp.response) {

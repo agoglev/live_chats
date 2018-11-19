@@ -4,6 +4,7 @@
   padding: 0 16px;
   height: 100vh;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 .Chat__history-wrap {
   box-sizing: border-box;
@@ -123,6 +124,7 @@
   width: 100%;
   max-width: 560px;
   padding: 16px 16px;
+  box-sizing: border-box;
 }
 .Chat__send-from__input_wrap {
   flex: 1;
@@ -139,6 +141,7 @@
   padding: 10px 56px 10px 16px;
   box-sizing: border-box;
   width: 100%;
+  -webkit-appearance: none;
 }
 .Chat__send-from__send-button {
   position: absolute;
