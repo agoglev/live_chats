@@ -133,6 +133,8 @@ class App extends Component {
   }
 
   _start = () => {
+    utils.statReachGoal('start');
+
     if (this.state.loadingPaymentsFailed) {
       return this._loadPayments();
     }
@@ -252,6 +254,7 @@ class App extends Component {
       if (!force) {
         this._useChat();
       }
+      utils.statReachGoal('connect');
     } else {
       api.method(api.methods.leave, { id: fromId });
     }
@@ -284,6 +287,7 @@ class App extends Component {
   _leaveChat = () => {
     api.method(api.methods.leave, { id: this.state.user.id });
     this._checkChats();
+    utils.statReachGoal('skip');
   };
 
   _loadPayments = () => {
@@ -294,6 +298,8 @@ class App extends Component {
     payment.getAvailableChats()
       .then((availChats) => this.setState({availChats, loadingPayments: false}))
       .catch(() => this.setState({loadingPaymentsFailed: true, loadingPayments: false}));
+
+    utils.statReachGoal('payment_rates');
   };
 
   _useChat = () => {
@@ -328,7 +334,11 @@ class App extends Component {
         });
         this.setState({messages});
         resolve();
-      }).catch(reject);
+        utils.statReachGoal('message_sent');
+      }).catch(() => {
+        reject();
+        utils.statReachGoal('message_failed');
+      });
     });
   };
 }

@@ -108,8 +108,8 @@ export function statReachGoal(eventName) {
   if (isDev()) {
     return;
   }
-  if (window.yaCounter50682085 && window.yaCounter50682085.reachGoal) {
-    window.yaCounter50682085.reachGoal(eventName);
+  if (window.yaCounter51214298 && window.yaCounter51214298.reachGoal) {
+    window.yaCounter51214298.reachGoal(eventName);
   } else {
     StatsQueue.push(eventName);
   }
@@ -118,7 +118,6 @@ export function statReachGoal(eventName) {
 export function stripHTML(e){return e?e.replace(/<(?:.|\s)*?>/g,""):""}
 
 export function updateVkFrameHeight() {
-  console.log('here', window.vkHeight);
   window.VK.callMethod('resizeWindow', window.innerWidth, Math.max(window.vkHeight - 167, 600));
 }
 
