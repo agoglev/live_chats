@@ -1,6 +1,6 @@
 import * as api from './services/api';
 
-export const FREE_CHATS = 10;
+export const FREE_CHATS = 5;
 
 let availFreeChats = 0;
 let usedFreeChats = 0;

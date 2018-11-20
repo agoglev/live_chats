@@ -3,6 +3,7 @@ import 'url-search-params-polyfill';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import connect from '@vkontakte/vkui-connect';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -18,26 +19,32 @@ window.VkToken = urlParams.get('access_token');
 window.VkInfo = (JSON.parse(decodeURIComponent(urlParams.get('api_result'))) || {response: [{}]}).response[0];
 window.VkInfo.sex = parseInt(window.VkInfo.sex, 10);
 window.AppId = parseInt(urlParams.get('api_id'), 10);
+const isDG = parseInt(urlParams.get('is_dg') , 10) === 1;
+window.isDG = isDG;
 
-window.onload = () => {
-  window.VK.init(function () {
-    try {
-      window.VK.addCallback('onScrollTop', function (vkScrollPos, vkHeight, vkOffset) {
-        window.vkHeight = vkHeight;
-        utils.updateVkFrameHeight();
-      });
-      window.VK.callMethod('scrollTop');
-    } catch (e) {
+if (isDG) {
+  connect.send('VKWebAppInit', {});
+} else {
+  window.onload = () => {
+    window.VK.init(function () {
+      try {
+        window.VK.addCallback('onScrollTop', function (vkScrollPos, vkHeight, vkOffset) {
+          window.vkHeight = vkHeight;
+          utils.updateVkFrameHeight();
+        });
+        window.VK.callMethod('scrollTop');
+      } catch (e) {
 
-    }
-  }, function () {
-    // API initialization failed
-    // Can reload page here
-  }, '5.87');
+      }
+    }, function () {
+      // API initialization failed
+      // Can reload page here
+    }, '5.87');
 
-  ReactDOM.render(<App/>, document.getElementById('root'));
-  realtime();
-};
+    ReactDOM.render(<App/>, document.getElementById('root'));
+    realtime();
+  };
+}
 
 serviceWorker.unregister();
 

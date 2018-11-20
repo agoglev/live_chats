@@ -22,7 +22,7 @@
     -->
     <title>React App</title>
   </head>
-  <body>
+  <body style="padding: 0;margin: 0;">
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
@@ -43,10 +43,12 @@
     -->
     <div id="vk_js"></div>
     <script type="text/javascript">
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = location.href.match(/is_mob/) ? 'https://vk.com/js/api/mobile_sdk.js' : 'https://vk.com/js/api/xd_connection.js?2';
-      document.getElementById('vk_js').appendChild(script);
+      if (!location.href.match('is_dg')) {
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = location.href.match(/is_mob/) ? 'https://vk.com/js/api/mobile_sdk.js' : 'https://vk.com/js/api/xd_connection.js?2';
+        document.getElementById('vk_js').appendChild(script);
+      }
     </script>
     <!-- Yandex.Metrika counter --> <script type="text/javascript" > (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter51214298 = new Ya.Metrika2({ id:51214298, clickmap:true, trackLinks:true, accurateTrackBounce:true, ut:"noindex" }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/tag.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks2"); </script><!-- /Yandex.Metrika counter -->
   </body>

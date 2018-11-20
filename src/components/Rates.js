@@ -4,6 +4,10 @@ import * as utils from "../utils";
 import * as payment from '../payments';
 
 export default class Rates extends Component {
+  componentDidMount() {
+    utils.statReachGoal('rates');
+  }
+
   render() {
     return (
       <div className="Status__wrap">

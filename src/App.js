@@ -17,6 +17,8 @@ const Status = {
   payment: 6
 };
 
+let SkipChatUser = {};
+
 class App extends Component {
   constructor() {
     super();
@@ -252,7 +254,7 @@ class App extends Component {
       this.setState({status: Status.chat, user, messages: []});
       clearTimeout(this.checkChatsTimer);
       if (!force) {
-        this._useChat();
+        this._useChat(fromId);
       }
       utils.statReachGoal('connect');
     } else {
@@ -298,11 +300,13 @@ class App extends Component {
     payment.getAvailableChats()
       .then((availChats) => this.setState({availChats, loadingPayments: false}))
       .catch(() => this.setState({loadingPaymentsFailed: true, loadingPayments: false}));
-
-    utils.statReachGoal('payment_rates');
   };
 
-  _useChat = () => {
+  _useChat = (fromId) => {
+    if (SkipChatUser[fromId]) {
+      return;
+    }
+    SkipChatUser[fromId] = true;
     const availChats = this.state.availChats - 1;
     this.setState({availChats});
     payment.useChat();
