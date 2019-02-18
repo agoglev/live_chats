@@ -69,7 +69,7 @@ export default class Chat extends Component {
                 onFocus={() => this.setState({isFocused: true})}
                 onBlur={() => {
                   this.setState({isFocused: false});
-                  Chat.scrollToBottom();
+                  //Chat.scrollToBottom();
                 }}
               />
               <div

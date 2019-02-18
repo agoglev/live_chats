@@ -10,6 +10,10 @@ body {
 }
 * {
   -webkit-tap-highlight-color: transparent;
+}
+div,
+span,
+body {
   user-select: none;
 }
 .Chat__wrap {
