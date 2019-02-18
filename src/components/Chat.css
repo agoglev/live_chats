@@ -2,19 +2,24 @@
   width: 100%;
   max-width: 560px;
   padding: 0 16px;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0 auto;
   box-sizing: border-box;
 }
 .Chat__history-wrap {
   box-sizing: border-box;
   overflow: hidden;
-  height: calc(100vh - 72px - 47px);
   margin-top: 47px;
-  width: 560px;
+  margin-top: calc(env(safe-area-inset-top) + 47px);
+  margin-bottom: 72px;
+  margin-bottom: calc(env(safe-area-inset-bottom) + 72px);
+  max-width: 560px;
+  width: 100%;
+}
+.Chat__wrap.focused .Chat__history-wrap {
+  margin-bottom: 88px;
 }
 .Chat__history {
-  overflow-y: scroll;
   width: 100%;
   padding-right: 45px;
   max-height: 100%;
@@ -34,6 +39,8 @@
 .Chat__photos {
   display: flex;
   margin-top: 12px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .Chat__photo {
   flex: 0 0 auto;
@@ -95,6 +102,7 @@
   padding: 10px 16px;
   background: #cee0f5;
   border-radius: 20px;
+  user-select: auto;
 }
 .Chat__message.inbox .Chat__message__text {
   background: #ebedf0;
@@ -125,6 +133,10 @@
   max-width: 560px;
   padding: 16px 16px;
   box-sizing: border-box;
+  padding-bottom: max(env(safe-area-inset-bottom), 16px);
+}
+.Chat__wrap.focused .Chat__send-from__cont {
+  padding-bottom: 16px;
 }
 .Chat__send-from__input_wrap {
   flex: 1;
@@ -145,10 +157,10 @@
 }
 .Chat__send-from__send-button {
   position: absolute;
-  right: 16px;
-  bottom: 8px;
-  width: 24px;
-  height: 24px;
+  right: 8px;
+  bottom: 0;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
   transition: opacity 150ms ease-in-out;
 }
@@ -197,6 +209,7 @@
   background: url('../asset/close_40@2x.png') no-repeat center / contain;
   position: absolute;
   top: 16px;
+  top: calc(env(safe-area-inset-bottom) + 16px);
   left: 16px;
   width: 40px;
   height: 40px;

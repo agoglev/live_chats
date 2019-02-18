@@ -8,8 +8,14 @@ export default class Chat extends Component {
 
     this.state = {
       text: '',
-      photoShown: false
+      photoShown: false,
+      isFocused: false,
+      sendButtonLocked: false
     };
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.unlockSendTimer);s
   }
 
   render() {
@@ -21,11 +27,16 @@ export default class Chat extends Component {
 
     const sendBtnClassName = utils.classNames({
       ['Chat__send-from__send-button']: true,
-      active: this.state.text.trim().length > 0
+      active: this.state.text.trim().length > 0 && !this.state.sendButtonLocked
+    });
+
+    const wrapClassName = utils.classNames({
+      Chat__wrap: true,
+      focused: this.state.isFocused
     });
 
     return (
-      <div className="Chat__wrap">
+      <div className={wrapClassName}>
         {this._renderShownPhoto()}
         <div className="Chat__history-wrap">
           <div className="Chat__history">
@@ -49,11 +60,17 @@ export default class Chat extends Component {
             <div className="Chat__send-from__input_wrap">
               <input
                 type="text"
+                maxLength={300}
                 placeholder="Ваше сообщение.."
                 className="Chat__send-from__input"
                 value={this.state.text}
                 onChange={(e) => this.setState({text: e.target.value})}
                 onKeyDown={this._formKeyDown}
+                onFocus={() => this.setState({isFocused: true})}
+                onBlur={() => {
+                  this.setState({isFocused: false});
+                  Chat.scrollToBottom();
+                }}
               />
               <div
                 className={sendBtnClassName}
@@ -110,7 +127,7 @@ export default class Chat extends Component {
   }
 
   _sendBtnDidPress = () => {
-    if (this.sending) {
+    if (this.sending || this.state.sendButtonLocked) {
       return;
     }
     const text = this.state.text.trim();
@@ -123,6 +140,8 @@ export default class Chat extends Component {
       this.setState({text: ''});
       Chat.scrollToBottom(true);
       this.sending = false;
+      this.setState({sendButtonLocked: true});
+      this.unlockSendTimer = setTimeout(() => this.setState({sendButtonLocked: false}), 1000);
     }).catch(() => {
       this.sending = false;
     });
@@ -166,11 +185,18 @@ export default class Chat extends Component {
   }
 
   static scrollToBottom(fast) {
-    const el = document.querySelector('.Chat__history');
+    /*const el = document.querySelector('.Chat__history');
     if (!el) {
       return;
-    }
-    const fn = () => el.scrollTop = el.scrollHeight;
+    }*/
+    //const fn = () => el.scrollTop = el.scrollHeight;
+
+    const fn = () => {
+      const st = document.body.scrollHeight - window.scrollY - document.body.offsetHeight;
+      if (st < 150) {
+        window.scrollTo(0, document.body.scrollHeight);
+      }
+    };
     if (fast) {
       fn();
     } else {

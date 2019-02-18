@@ -4,6 +4,7 @@ let socket = null;
 let ppTimer = null;
 let pongTimer = null;
 let eventHandler = false;
+let closedByClient = false;
 
 export function setEventHandler(handler) {
   eventHandler = handler;
@@ -14,14 +15,35 @@ export default function init() {
 }
 
 function connect() {
-  socket = new WebSocket('wss://dateapp.ru/live_chats_ws/?token=' + window.VkToken + '&last_event_id=' + lastEventId);
+  let params = {
+    last_event_id: lastEventId
+  };
+
+  if (window.VkToken) {
+    params.token = window.VkToken;
+  } else if (window.VkAppsSign) {
+    params.sign = window.VkAppsSign;
+    params.url = window.VkInitialSearch;
+  }
+
+  let paramsArr = [];
+  for (let i in params) {
+    paramsArr.push(`${i}=${encodeURIComponent(params[i])}`);
+  }
+
+  closedByClient = false;
+
+  socket = new WebSocket('wss://dateapp.ru/live_chats_ws/?' + paramsArr.join('&'));
+
   socket.onopen = function() {
     console.log('ws connected');
   };
 
   socket.onclose = () => {
     console.log('closed');
-    connectionDidClose();
+    if (!closedByClient) {
+      connectionDidClose();
+    }
   };
   socket.onmessage = messageDidReceive;
 
@@ -41,10 +63,17 @@ function messageDidReceive(e) {
   try {
     data = JSON.parse(e.data);
   } catch(e) {
+    console.log('err', e.message);
     return;
   }
 
   lastEventId = data.id;
+
+  if (data.type === 'multi_connections') {
+    closedByClient = true;
+    socket.close();
+  }
+
   if (eventHandler) {
     eventHandler(data.event);
   }

@@ -26,11 +26,12 @@ class App extends Component {
     this.connectingChatId = null;
 
     this.state = {
-      loadingPayments: true,
+      loadingPayments: false,
       loadingPaymentsFailed: false,
       availChats: 0,
       status: Status.nothing,
-      messages: []
+      messages: [],
+      isMultiConnections: false,
     };
   }
 
@@ -45,7 +46,7 @@ class App extends Component {
         <div className="App__header">
           <div className="App__header__content">
             <div className="App__header__logo">Рулетка</div>
-            {window.VkInfo.sex === 2 && !this.state.loadingPayments && <div className="App__header__balance">{utils.availChatsStr(this.state.availChats)}</div>}
+            {false && window.VkInfo.sex === 2 && !this.state.loadingPayments && <div className="App__header__balance">{utils.availChatsStr(this.state.availChats)}</div>}
           </div>
         </div>
         {this._renderGetContent()}
@@ -54,6 +55,10 @@ class App extends Component {
   }
 
   _renderGetContent() {
+    if (this.state.isMultiConnections) {
+      return this._renderStatusLoading();
+    }
+
     switch (this.state.status) {
       case Status.nothing:
         return this._renderStatusNothing();
@@ -106,7 +111,13 @@ class App extends Component {
     let title = 'Поиск собеседника';
     let caption = 'Соединим с первым из очереди';
     let button = false;
-    if (this.state.status === Status.connecting) {
+
+    if (this.state.isMultiConnections) {
+      title = 'Ошибка';
+      caption = 'Вы уже используете Рулетку с другого устройства';
+      className = 'leave';
+      button = <div className="Status__button" onClick={() => window.location.reload()}>Обновить страницу</div>;
+    } else if (this.state.status === Status.connecting) {
       title= 'Соединение';
       caption = 'Ждём подключения собеседника';
       className = 'connecting';
@@ -138,11 +149,11 @@ class App extends Component {
     utils.statReachGoal('start');
 
     if (this.state.loadingPaymentsFailed) {
-      return this._loadPayments();
+      //return this._loadPayments();
     }
 
     if (window.VkInfo.sex === 2 && !this.state.availChats) {
-      return this.setState({status: Status.payment});
+      //return this.setState({status: Status.payment});
     }
 
     this.setState({status: Status.loading});
@@ -178,8 +189,17 @@ class App extends Component {
       }
 
       window.VkInfo.photos = photos;
+
+      if (!this.state.status !== Status.loading) {
+        return;
+      }
+
       this._checkChats();
     }).catch(() => {
+      if (!this.state.status !== Status.loading) {
+        return;
+      }
+
       window.VkInfo.photos = [];
       this._checkChats();
     });
@@ -188,9 +208,10 @@ class App extends Component {
   _checkChats = () => {
     this.connectingChatId = null;
     clearTimeout(this.checkChatsTimer);
+    clearTimeout(this.useTimer);
 
     if (window.VkInfo.sex === 2 && !this.state.availChats) {
-      return this.setState({status: Status.payment});
+      //return this.setState({status: Status.payment});
     }
 
     this.setState({status: Status.loading});
@@ -235,7 +256,20 @@ class App extends Component {
       case 'message':
         this._messageEventDidReceive(parseInt(event.fromId, 10), event.text);
         break;
+      case 'multi_connections':
+        this._multiConnectionsEventDidReceive();
+        break;
     }
+  };
+
+  _multiConnectionsEventDidReceive = () => {
+    if (this.state.status !== Status.nothing) {
+      this.connectingChatId = null;
+      clearTimeout(this.checkChatsTimer);
+      clearTimeout(this.useTimer);
+      this.setState({status: Status.nothing});
+    }
+    this.setState({isMultiConnections: true});
   };
 
   _checkEventDidReceive(fromId) {
@@ -244,8 +278,10 @@ class App extends Component {
       this.connectingChatId = fromId;
       this.setState({status: Status.connecting});
       api.method(api.methods.accept, {id: fromId});
+      console.log('_checkEventDidReceive: send accept');
     } else {
       api.method(api.methods.reject, {id: fromId});
+      console.log('_checkEventDidReceive: send reject');
     }
   }
 
@@ -254,10 +290,11 @@ class App extends Component {
       this.setState({status: Status.chat, user, messages: []});
       clearTimeout(this.checkChatsTimer);
       if (!force) {
-        this._useChat(fromId);
+        this.useTimer = setTimeout(() => this._useChat(fromId), 5000);
       }
       utils.statReachGoal('connect');
     } else {
+      console.log('_connectEventDidReceive: send leave');
       api.method(api.methods.leave, { id: fromId });
     }
   }
@@ -272,6 +309,7 @@ class App extends Component {
     if (this.state.status === Status.chat && parseInt(this.state.user.id, 10) === fromId) {
       clearTimeout(this.checkChatsTimer);
       this.setState({status: Status.leave});
+      console.log('_leaveEventDidReceive');
     }
   }
 
@@ -293,7 +331,7 @@ class App extends Component {
   };
 
   _loadPayments = () => {
-    if (window.VkInfo.sex === 1) {
+    if (window.VkInfo.sex === 1 || true) {
       return this.setState({loadingPayments: false});
     }
     this.setState({loadingPaymentsFailed: false, loadingPayments: true});
@@ -303,7 +341,7 @@ class App extends Component {
   };
 
   _useChat = (fromId) => {
-    if (SkipChatUser[fromId]) {
+    if (SkipChatUser[fromId] || true) {
       return;
     }
     SkipChatUser[fromId] = true;
@@ -329,7 +367,8 @@ class App extends Component {
   _sendMessage = (text) => {
     return new Promise((resolve, reject) => {
       api.method(api.methods.message, {
-        text
+        text,
+        id: this.state.user.id
       }).then(() => {
         let messages = this.state.messages;
         messages.push({

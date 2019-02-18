@@ -5,7 +5,7 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "cross-env HOST=localhost PORT=3000 HTTPS=false react-scripts start",
+    "start": "cross-env HOST=localhost PORT=3000 HTTPS=true react-scripts start",
     "build": "react-scripts build"
   },
   "keywords": [],
@@ -30,6 +30,7 @@
     "gh-pages": "^2.0.1",
     "promise-polyfill": "8.1.0",
     "prop-types": "^15.6.2",
+    "query-string": "^6.2.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.6",

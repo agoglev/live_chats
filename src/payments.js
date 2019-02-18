@@ -1,4 +1,5 @@
 import * as api from './services/api';
+import connect from '@vkontakte/vkui-connect';
 
 export const FREE_CHATS = 5;
 
@@ -131,4 +132,27 @@ function _orderBoxCallback(status) {
 
 export function incrChats(count) {
   availChats += count;
+}
+
+let vkPayPromise = false;
+export function vkPayRequest(amount, description) {
+  return new Promise((resolve, reject) => {
+    vkPayPromise = {resolve, reject};
+    connect.send('VKWebAppOpenPayForm', {app_id: 6682509, action: 'pay-to-group', params: {
+        group_id: 160479731,
+        amount,
+        description: description + `\nНе меняйте сумму платежа, иначе деньги будут отправлены в пустую!`
+      }});
+  });
+}
+
+export function resolveVkPayRequest(status) {
+  if (vkPayPromise) {
+    if (status) {
+      vkPayPromise.resolve();
+    } else {
+      vkPayPromise.reject();
+    }
+  }
+  vkPayPromise = false;
 }

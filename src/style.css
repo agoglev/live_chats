@@ -8,6 +8,10 @@ body {
   padding: 0;
   margin: 0;
 }
+* {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
 .Chat__wrap {
   display: flex;
 }
@@ -69,6 +73,7 @@ body {
   line-height: 20px;
   color: rgba(255, 255, 255, 0.72);
   margin-top: 4px;
+  text-align: center;
 }
 .Status__button {
   color: #d96289;
@@ -80,18 +85,18 @@ body {
   padding: 10px 24px;
   margin-top: 16px;
   cursor: pointer;
+  flex: 0 0 auto;
 }
 .App__header {
-  height: 48px;
   width: 100%;
-  box-sizing: border-box;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   position: fixed;
   top: 0;
   left: 0;
   z-index: 500;
-  padding: 0 16px;
+  padding: 11px 16px 13px;
   background: #fff;
+  padding-top: calc(env(safe-area-inset-top) + 11px);
 }
 .App__header__content {
   width: 100%;
