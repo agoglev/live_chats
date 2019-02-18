@@ -182,7 +182,7 @@ class App extends Component {
             break;
           }
         }
-        if (!src) {
+        if (!src || isNaN(src) || src === null) {
           continue;
         }
         photos.push(src);
