@@ -15,6 +15,7 @@ export function method(name, params = {}) {
       body: JSON.stringify(params),
       credentials: 'omit',
       async: false,
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json'
       },

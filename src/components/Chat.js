@@ -44,9 +44,9 @@ export default class Chat extends Component {
               <div className="Chat__name">{this.props.state.user.name}</div>
               <div className="Chat__caption">{this._makeDescription()}</div>
             </div>
-            <div className={photosClassName}>
+            {this.props.state.user.photos.length > 0 && <div className={photosClassName}>
               {this._renderPhotos()}
-            </div>
+            </div>}
             <div className="Chat_messages">
               <div className="Chat__message system">
                 <div className="Chat__message__text">Напиши первое сообщение! Если {this.props.state.user.name} не нравится, нажми {Chat.skipIcon} снизу и перейди к другому собеседнику.</div>
