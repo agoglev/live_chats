@@ -190,7 +190,7 @@ class App extends Component {
 
       window.VkInfo.photos = photos;
 
-      if (!this.state.status !== Status.loading) {
+      if (this.state.status !== Status.loading) {
         return;
       }
 

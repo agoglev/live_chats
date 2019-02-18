@@ -15,7 +15,7 @@ export default class Chat extends Component {
   }
 
   componentWillUnmount() {
-    clearTimeout(this.unlockSendTimer);s
+    clearTimeout(this.unlockSendTimer);
   }
 
   render() {
@@ -49,7 +49,7 @@ export default class Chat extends Component {
             </div>
             <div className="Chat_messages">
               <div className="Chat__message system">
-                <div className="Chat__message__text">Напиши первое сообщение! Если {this.props.state.user.name} не нравится, нажми {Chat.skipIcon()} снизу и перейди к другому собеседнику.</div>
+                <div className="Chat__message__text">Напиши первое сообщение! Если {this.props.state.user.name} не нравится, нажми {Chat.skipIcon} снизу и перейди к другому собеседнику.</div>
               </div>
               {this._renderMessages()}
             </div>
@@ -91,7 +91,7 @@ export default class Chat extends Component {
     )
   }
 
-  static skipIcon() {
+  static get skipIcon() {
     return <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M3.728 9.118a6.335 6.335 0 0 1 11.49-2.707c-.18.064-.35.168-.494.313l-.54.539A5.002 5.002 0 0 0 5.11 8.946l.419-.417a.667.667 0 0 1 .942.942l-1.666 1.667a.667.667 0 0 1-.943 0L2.195 9.471a.667.667 0 0 1 .943-.942l.59.59zm12.579 1.465a6.334 6.334 0 0 1-11.71 2.724c.25-.05.486-.171.68-.364l.41-.411a5.001 5.001 0 0 0 9.27-1.88l-.486.486a.667.667 0 0 1-.942-.943l1.666-1.666c.26-.26.683-.26.943 0l1.667 1.666a.667.667 0 0 1-.943.943l-.555-.555z" fill="#000" fillRule="nonzero"/></svg>;
   }
 
@@ -173,7 +173,20 @@ export default class Chat extends Component {
     }
 
     return (
-      <div className="Chat__photo-view" onClick={() => this.setState({photoShown: false})}>
+      <div
+        className="Chat__photo-view" onClick={() => this.setState({photoShown: false})}
+        onTouchStart={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }}
+        onTouchEnd={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.setState({photoShown: false});
+          return false;
+        }}
+      >
         <div className="Chat__photo__close" />
         <div className="Chat__photo-view-img" style={{backgroundImage: `url(${this.state.photoShown})`}} />
       </div>

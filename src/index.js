@@ -67,7 +67,7 @@ if (!window.isDG) {
     }
   });
 
-  connect.send('VKWebAppSetViewSettings', {status_bar_style: 'dark', action_bar_color: "#000"});
+  connect.send('VKWebAppSetViewSettings', {status_bar_style: 'dark', action_bar_color: "#fff"});
 
   ReactDOM.render(<App/>, document.getElementById('root'));
   realtime();
