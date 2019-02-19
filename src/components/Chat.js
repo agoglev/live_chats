@@ -61,7 +61,7 @@ export default class Chat extends Component {
               <input
                 type="text"
                 maxLength={300}
-                placeholder="Ваше сообщение.."
+                placeholder="Ваше сообщение..."
                 className="Chat__send-from__input"
                 value={this.state.text}
                 onChange={(e) => this.setState({text: e.target.value})}

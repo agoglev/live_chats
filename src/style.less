@@ -6,6 +6,7 @@ body {
   min-height: 100vh;
   padding: 0;
   margin: 0;
+  overflow-y: scroll;
 }
 
 * {
@@ -179,10 +180,6 @@ div, span, body {
   display: inline-block;
   cursor: pointer;
 
-  &:hover {
-    opacity: 0.72;
-  }
-
   &.loading {
     pointer-events: none;
     opacity: .64 !important;
@@ -190,5 +187,11 @@ div, span, body {
 
   &.failed {
     background: #d96289;
+  }
+}
+
+@media(max-width: 700px) {
+  .Status__into__button:hover {
+    opacity: 0.72;
   }
 }
