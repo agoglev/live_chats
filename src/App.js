@@ -222,7 +222,8 @@ class App extends Component {
       gender: info.sex,
       bdate: info.bdate,
       education: info.university_name,
-      city: info.city ? info.city.title : ''
+      city: info.city ? info.city.title : '',
+      group_id: window.GroupId
     }).then((resp) => {
       clearTimeout(this.checkChatsTimer);
       if (this.state.status !== Status.loading) {
