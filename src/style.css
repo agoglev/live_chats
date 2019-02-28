@@ -32,15 +32,13 @@ body {
 .Status__loading {
   max-width: 416px;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: #5c5ccc;
   border-radius: 20px;
   flex-direction: column;
   padding: 64px 16px;
   box-sizing: border-box;
   transition: background 150ms ease-in-out;
+  text-align: center;
 }
 .Status__loading.connecting {
   background: #4dbf99;
@@ -53,6 +51,7 @@ body {
   height: 96px;
   background: url('asset/state_loading_96@2x.png') no-repeat center / contain;
   animation: Status__loading__icon_anim 2s linear forwards infinite;
+  margin: 0 auto;
 }
 .Status__loading.leave .Status__loading__icon {
   animation: none;
@@ -91,6 +90,7 @@ body {
   margin-top: 16px;
   cursor: pointer;
   flex: 0 0 auto;
+  display: inline-block;
 }
 .App__header {
   width: 100%;
