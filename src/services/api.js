@@ -36,7 +36,8 @@ export const methods = {
   reject: 'reject',
   leave: 'leave',
   message: 'message',
-  typing: 'typing'
+  typing: 'typing',
+  updateOnline: 'update_online'
 };
 
 let vkRequestId = 0;

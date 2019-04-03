@@ -468,16 +468,22 @@ class App extends Component {
         this._leaveChat(true);
       }
       this.setState({status: Status.nothing});
+      this._updateOnline();
     } else if (this.state.status === Status.settings) {
       this.setState({status: Status.nothing});
+      this._updateOnline();
     } else if (this.state.status === Status.nothing) {
-      this.setState({status: Status.settings});
+      this._openSettings();
     }
   };
 
   _openSettings = () => {
     this.setState({status: Status.settings});
-  }
+  };
+
+  _updateOnline = () => {
+    api.method(api.methods.updateOnline);
+  };
 }
 
 export default App;
