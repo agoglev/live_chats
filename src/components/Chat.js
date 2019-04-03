@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Chat.css';
 import * as utils from '../utils';
+import * as api from "../services/api";
 
 export default class Chat extends Component {
   constructor() {
@@ -10,8 +11,13 @@ export default class Chat extends Component {
       text: '',
       photoShown: false,
       isFocused: false,
-      sendButtonLocked: false
+      sendButtonLocked: false,
+      typingShown: false
     };
+  }
+
+  componentDidMount() {
+    this.refs['peer_info'].scrollLeft = this.refs['peer_info'].scrollWidth;
   }
 
   componentWillUnmount() {
@@ -40,31 +46,48 @@ export default class Chat extends Component {
         {this._renderShownPhoto()}
         <div className="Chat__history-wrap">
           <div className="Chat__history">
-            <div>
-              <div className="Chat__name">{this.props.state.user.name}</div>
-              <div className="Chat__caption">{this._makeDescription()}</div>
-            </div>
-            {this.props.state.user.photos.length > 0 && <div className={photosClassName}>
-              {this._renderPhotos()}
-            </div>}
-            <div className="Chat_messages">
-              <div className="Chat__message system">
-                <div className="Chat__message__text">Напиши первое сообщение! Если {this.props.state.user.name} не нравится, нажми {Chat.skipIcon} снизу и перейди к другому собеседнику.</div>
+            <div className="Chat__peer_info__wrap">
+              <div className="Chat__peer_info" ref="peer_info">
+                {this.props.state.user.photos.length > 0 && <div className={photosClassName}>
+                  {this._renderPhotos()}
+                </div>}
+                <div className="Chat__peer_info_cont" style={{width: `${window.innerWidth - 152}px`}}>
+                  <div className="Chat__name">{this.props.state.user.name}</div>
+                  <div className="Chat__caption">{this._makeDescription()}</div>
+                </div>
               </div>
+            </div>
+            <div className="Chat_messages">
               {this._renderMessages()}
+              {this.state.typingShown && <div className="Chat__message inbox typing">
+                <div className="Chat__message__text">
+                  <div className="pr " id="">
+                    <div className="pr_bt" />
+                    <div className="pr_bt" />
+                    <div className="pr_bt" />
+                  </div>
+                </div>
+              </div>}
             </div>
           </div>
         </div>
         <div className="Chat__send-from">
           <div className="Chat__send-from__cont">
+            {this._renderSuggestions()}
+            <div className="Chat__send-from__skip_button" onClick={this.props.skip}>
+              <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.755 17A8 8 0 0 0 20 12v-1.5m-2.19-4A8 8 0 0 0 4 12v1.5m0 0L6.5 11M4 13.5L1.5 11m18.5-.5l2.5 2.5M20 10.5L17.5 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </div>
             <div className="Chat__send-from__input_wrap">
               <input
                 type="text"
                 maxLength={300}
-                placeholder="Ваше сообщение..."
+                placeholder="Сообщение"
                 className="Chat__send-from__input"
                 value={this.state.text}
-                onChange={(e) => this.setState({text: e.target.value})}
+                onChange={(e) => {
+                  this.setState({text: e.target.value});
+                  this._typing();
+                }}
                 onKeyDown={this._formKeyDown}
                 onFocus={() => this.setState({isFocused: true})}
                 onBlur={() => {
@@ -72,18 +95,15 @@ export default class Chat extends Component {
                   //Chat.scrollToBottom();
                 }}
               />
-              <div
-                className={sendBtnClassName}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  this._sendBtnDidPress();
-                }}
-              >
-                <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M5.733 12a4.985 4.985 0 0 1-1.94-2.358C3.134 7.98 2.667 6.6 2.392 5.488c-.515-2.077-.577-2.579.15-3.559.665-.894 1.61-1.062 2.559-.843.455.105.942.307 1.58.63 1.87.944 10.107 5.615 12.504 7.07.925.56 1.22.747 1.561 1.006.781.592 1.256 1.204 1.255 2.21 0 1.004-.475 1.615-1.256 2.207-.341.259-.636.445-1.56 1.005-2.327 1.41-10.658 6.138-12.504 7.07-.638.323-1.125.525-1.58.63-.949.219-1.894.05-2.558-.843-.728-.98-.666-1.482-.151-3.559.275-1.112.742-2.491 1.403-4.154A4.985 4.985 0 0 1 5.733 12zm-.102 3.102c-.63 1.586-1.07 2.884-1.32 3.895-.495 1.999-.495 2.499 1.484 1.5 1.98-1 10.383-5.792 12.37-6.997 2.474-1.5 2.474-1.5 0-3-2.103-1.276-10.39-5.997-12.37-6.996-1.98-1-1.98-.5-1.484 1.5.25 1.01.69 2.308 1.32 3.894a2.975 2.975 0 0 0 2.305 1.847c3.52.546 5.281.964 5.281 1.255 0 .29-1.76.709-5.28 1.254a2.975 2.975 0 0 0-2.306 1.848z" fill="#9DA0A3" fillRule="nonzero"/></svg>
-              </div>
             </div>
-            <div className="Chat__send-from__skip_button" onClick={this.props.skip}>
-              <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M2.591 10.177C3.235 5.557 7.202 2 12 2a9.49 9.49 0 0 1 7.828 4.116 1.992 1.992 0 0 0-.742.47l-.809.808A7.503 7.503 0 0 0 4.667 9.92l.626-.626a1 1 0 0 1 1.414 1.414l-2.5 2.5a1 1 0 0 1-1.414 0l-2.5-2.5a1 1 0 0 1 1.414-1.414l.884.884zm18.87 2.198C21.018 17.21 16.95 21 12 21a9.494 9.494 0 0 1-8.104-4.54 1.99 1.99 0 0 0 1.018-.546l.617-.617a7.501 7.501 0 0 0 13.906-2.82l-.73.73a1 1 0 0 1-1.414-1.414l2.5-2.5a1 1 0 0 1 1.414 0l2.5 2.5a1 1 0 0 1-1.414 1.414l-.833-.832z" fill="#9DA0A3" fillRule="nonzero"/></svg>
+            <div
+              className={sendBtnClassName}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                this._sendBtnDidPress();
+              }}
+            >
+              <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 12l.263.965a1 1 0 0 0 0-1.93L11 12zm-4.873 8.772l-.484-.875.484.875zm13.497-10.085l-.483.875.483-.875zm0 2.626l-.483-.875.483.875zM6.127 3.228l-.484.875.484-.875zm-.484.875l13.498 7.46.967-1.751-13.497-7.46-.968 1.751zm13.498 8.335L5.643 19.897l.968 1.75 13.497-7.459-.967-1.75zM4.92 19.325l.935-3.367-1.927-.535-.935 3.367 1.927.535zm3.036-5.458l3.307-.902-.526-1.93-3.307.902.526 1.93zm3.307-2.832l-3.307-.902-.526 1.93 3.307.902.526-1.93zM5.855 8.042L4.92 4.675l-1.927.535.935 3.367 1.927-.535zm0 7.916a3 3 0 0 1 2.101-2.091l-.526-1.93a5 5 0 0 0-3.502 3.486l1.927.535zm-.212 3.939a.5.5 0 0 1-.723-.572l-1.927-.535C2.4 20.925 4.67 22.719 6.61 21.647l-.968-1.75zm13.498-8.335a.5.5 0 0 1 0 .876l.967 1.75c1.721-.951 1.721-3.425 0-4.376l-.967 1.75zM7.956 10.133a3 3 0 0 1-2.1-2.091l-1.928.535a5 5 0 0 0 3.502 3.486l.526-1.93zm-1.345-7.78C4.67 1.28 2.4 3.075 2.993 5.21l1.927-.535a.5.5 0 0 1 .723-.572l.968-1.75z" fill="currentColor"/></svg>
             </div>
           </div>
         </div>
@@ -134,6 +154,14 @@ export default class Chat extends Component {
     if (!text) {
       return;
     }
+
+    this._sendMsg(text);
+  };
+
+  _sendMsg = (text) => {
+    if (this.sending) {
+      return;
+    }
     this.sending = true;
 
     this.props.sendMessage(text).then(() => {
@@ -142,6 +170,7 @@ export default class Chat extends Component {
       this.sending = false;
       this.setState({sendButtonLocked: true});
       this.unlockSendTimer = setTimeout(() => this.setState({sendButtonLocked: false}), 1000);
+      this.lastTyping = 0;
     }).catch(() => {
       this.sending = false;
     });
@@ -207,7 +236,11 @@ export default class Chat extends Component {
     const fn = () => {
       const st = document.body.scrollHeight - window.scrollY - document.body.offsetHeight;
       if (st < 150) {
-        window.scrollTo(0, document.body.scrollHeight);
+        if (fast) {
+          window.scrollTo(0, document.body.scrollHeight);
+        } else {
+          utils.scrollToY(document.body.scrollHeight, 300);
+        }
       }
     };
     if (fast) {
@@ -222,5 +255,59 @@ export default class Chat extends Component {
       e.preventDefault();
       this._sendBtnDidPress();
     }
+  };
+
+  showTyping = () => {
+    clearTimeout(this.typingTimer);
+    this.setState({typingShown: true});
+    Chat.scrollToBottom();
+
+    this.typingTimer = setTimeout(this.hideTyping, 5000);
+  };
+
+  hideTyping = () => {
+    clearTimeout(this.typingTimer);
+    this.setState({typingShown: false});
+  };
+
+  _typing = () => {
+    const now = new Date().getTime();
+    if (now - this.lastTyping < 4000) {
+      return;
+    }
+    this.lastTyping = now;
+    api.method(api.methods.typing, {
+      id: this.props.state.user.id
+    });
+  };
+
+  _renderSuggestions = () => {
+    if (this.props.state.messages.length > 0) {
+      return null;
+    }
+
+    const messages = [
+      'Стой!',
+      'Привет!',
+      'Как дела?',
+      'Отличное фото'
+    ].map((message, i) => <div className="Chat_suggestions__message" key={i} onClick={() => this._sendMsg(message)}>{message}</div>);
+
+    return (
+      <div className="Chat_suggestions">
+        <div className="Chat_suggestions__info">
+          <div className="Chat_suggestions__info_cont">
+            <div className="Chat_suggestions__info__title">Скорее начни общение!</div>
+            <div className="Chat_suggestions__info__caption">Или пропусти собеседника <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.836 11.333A5.333 5.333 0 0 0 13.333 8V7m-1.46-2.667A5.333 5.333 0 0 0 2.667 8v1m0 0l1.666-1.667M2.667 9L1 7.333M13.333 7L15 8.667M13.333 7l-1.666 1.667" stroke="#8994A3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+          </div>
+          <div className="Chat_suggestions__info_icon" />
+        </div>
+        <div className="Chat_suggestions__messages_wrap">
+          <div className="Chat_suggestions__messages">
+            {messages}
+          </div>
+        </div>
+      </div>
+    )
   };
 }

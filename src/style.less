@@ -1,3 +1,5 @@
+@color-foreground-secondary: #8994A3;
+
 body, input, textarea {
   font-family: -apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
 }
@@ -13,6 +15,13 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+:root {
+  --background-color: #fff;
+  --text-primary: #000;
+  --text-secondary: #8994A3;
+  --text-primary-contrast: #fff;
+}
+
 div, span, body {
   user-select: none;
 }
@@ -26,41 +35,53 @@ div, span, body {
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: 16px;
-  padding-top: 48px;
+  padding: 48px 24px 16px;
   min-height: 100vh;
 }
 
 .Status__loading {
   max-width: 416px;
   width: 100%;
-  background: #5c5ccc;
+  //background: #5c5ccc;
   border-radius: 20px;
   flex-direction: column;
   padding: 64px 16px;
   box-sizing: border-box;
   transition: background 150ms ease-in-out;
   text-align: center;
+}
 
-  &.connecting {
-    background: #4dbf99;
+.Status__loading__indicator {
+  svg {
+    position: absolute;
+    top: 0;
+    left: 50%;
   }
-
-  &.leave {
-    background: #d96289;
-  }
+  animation: Status__loading__icon_anim 2s linear forwards infinite;
+  border-radius: 52px;
+  width: 104px;
+  height: 104px;
+  position: absolute;
+  top: 8px;
+  left: 8px;
 }
 
 .Status__loading__icon {
-  width: 96px;
-  height: 96px;
-  background: url('./asset/state_loading_96@2x.png') no-repeat center/contain;
-  animation: Status__loading__icon_anim 2s linear forwards infinite;
+  width: 120px;
+  height: 120px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.08), 0 4px 4px rgba(0, 0, 0, 0.08);
+  background: url('./asset/hand_searching_72.png') no-repeat center/contain;
+  background-size: 72px;
+  position: relative;
   margin: 0 auto;
+  border-radius: 60px;
 
   .Status__loading.leave & {
-    animation: none;
-    background-image: url('./asset/state_failure_96@2x.png');
+    background-image: url('./asset/hand_skipped_72.png');
+  }
+
+  .Status__loading.multi_connect & {
+    background-image: url('./asset/hand_error_72.png');
   }
 }
 
@@ -74,11 +95,11 @@ div, span, body {
 }
 
 .Status__loading__title {
-  font-size: 19px;
-  line-height: 24px;
-  color: #fff;
+  font-size: 20px;
+  line-height: 32px;
+  color: #000;
   margin-top: 24px;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .Status__loading__caption {
@@ -106,14 +127,13 @@ div, span, body {
 
 .App__header {
   width: 100%;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   position: fixed;
   top: 0;
   left: 0;
   z-index: 500;
-  padding: 11px 16px 13px;
   background: #fff;
-  padding-top: ~"calc(env(safe-area-inset-top) + 11px)";
+  padding-top: ~"env(safe-area-inset-top)";
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
 }
 
 .App__header__content {
@@ -122,15 +142,32 @@ div, span, body {
   margin: 0 auto;
   display: flex;
   align-items: center;
-  height: 100%;
+  height: 48px;
+
+  .App.android & {
+    height: 56px;
+  }
+}
+
+
+.App__header__btn {
+  height: 48px;
+  width: 48px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: @color-foreground-secondary;
+  margin-left: 4px;
 }
 
 .App__header__logo {
-  font-size: 19px;
-  line-height: 24px;
+  font-size: 16px;
+  line-height: 20px;
   color: #000;
   flex: 1;
-  font-weight: bold;
+  margin-left: 8px;
+  font-weight: 600;
 }
 
 .App__header__balance {
@@ -144,38 +181,37 @@ div, span, body {
 }
 
 .Status__into__icon {
-  width: 144px;
-  height: 144px;
-  border-radius: 72px;
-  background: #ffaf40 url('./asset/logo_144@2x.png') no-repeat center/cover;
+  width: 120px;
+  height: 120px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.08), 0px 4px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 60px;
+  background: url('./asset/hand_welcome_72.png') no-repeat center;
+  background-size: 72px;
   margin: 0 auto;
 }
 
-.Status__into__title {
-  margin-top: 24px;
-  font-size: 19px;
-  font-weight: bold;
-  line-height: 24px;
-}
-
 .Status__into__caption {
-  font-size: 15px;
-  line-height: 20px;
-  color: rgba(0,0,0,.48);
+  font-size: 20px;
+  line-height: 32px;
   max-width: 416px;
   width: 100%;
-  margin: 4px auto 0;
+  font-weight: bold;
+  margin: 32px auto 0;
+
+  span {
+    color: #5050E6;
+  }
 }
 
 .Status__into__button {
-  font-size: 15px;
-  font-weight: bold;
+  font-size: 16px;
   line-height: 20px;
+  font-weight: bold;
   color: #fff;
-  padding: 10px 32px;
+  padding: 14px 36px;
   border-radius: 31px;
-  background: #5c95e6;
-  margin-top: 24px;
+  background: linear-gradient(159.59deg, #AA61F2 0%, #675CE6 100%, #5050E6 100%);
+  margin-top: 32px;
   transition: all 150ms ease-in-out;
   display: inline-block;
   cursor: pointer;
@@ -193,5 +229,15 @@ div, span, body {
 @media(max-width: 700px) {
   .Status__into__button:hover {
     opacity: 0.72;
+  }
+}
+
+.Page__wrap {
+  margin-top: 47px;
+  margin-top: ~"calc(env(safe-area-inset-top) + 47px)";
+
+  .App.android & {
+    margin-top: 56px;
+    margin-top: ~"calc(env(safe-area-inset-top) + 56px)";
   }
 }

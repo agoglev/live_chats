@@ -23,6 +23,7 @@ window.VkInfo = (JSON.parse(decodeURIComponent(urlParams.get('api_result'))) || 
 window.VkInfo.sex = parseInt(window.VkInfo.sex, 10);
 window.AppId = parseInt(urlParams.get('api_id'), 10);
 window.GroupId = parseInt(urlParams.get('vk_group_id'), 10) || 0;
+window.Platform = urlParams.get('vk_platform');
 
 if (window.VkToken) {
   window.isDG = true;
