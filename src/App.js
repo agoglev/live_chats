@@ -7,6 +7,7 @@ import Chat from './components/Chat';
 import Rates from './components/Rates';
 import Settings from './components/Settings/Settings';
 import * as utils from './utils';
+import connect from '@vkontakte/vkui-connect';
 
 const Status = {
   nothing: 0,
@@ -216,6 +217,7 @@ class App extends Component {
         return;
       }
 
+      connect.send('VKWebAppAllowNotifications', {});
       this._checkChats();
     }).catch(() => {
       if (!this.state.status !== Status.loading) {
