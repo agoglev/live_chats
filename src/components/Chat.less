@@ -236,7 +236,7 @@
   }
 
   &.active path {
-    fill: #528FCC !important;
+    fill: var(--accent) !important;
   }
 }
 
@@ -251,6 +251,11 @@
   width: 48px;
   height: 48px;
   color: #8994A3;
+
+  &.locked {
+    pointer-events: none;
+    opacity: 0.48;
+  }
 
   &:hover {
     transform: rotate(180deg);

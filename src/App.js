@@ -31,12 +31,12 @@ class App extends Component {
       loadingPayments: false,
       loadingPaymentsFailed: false,
       availChats: 0,
-      status: Status.chat,
+      status: Status.nothing,
       messages: [],
       isMultiConnections: false,
       buttonType: '',
       onlineCount: 0,
-      user: {
+      /*user: {
         name: 'Test',
         bdate: '31.01.1995',
         city: 'Moscow',
@@ -44,7 +44,7 @@ class App extends Component {
           'https://sun1-23.userapi.com/c855224/v855224035/166b7/v1gBZcv3o9Y.jpg',
           'https://pp.userapi.com/c851420/v851420808/ed655/btjtdLMkbBM.jpg'
         ]
-      }
+      }*/
     };
   }
 
@@ -439,8 +439,8 @@ class App extends Component {
     } else {
       icon = (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 12H20" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M11.5 18.5L5 12L11.5 5.5" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M6 12H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M11.5 18.5L5 12L11.5 5.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       )
     }

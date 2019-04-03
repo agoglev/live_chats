@@ -12,15 +12,21 @@ export default class Chat extends Component {
       photoShown: false,
       isFocused: false,
       sendButtonLocked: false,
-      typingShown: false
+      typingShown: false,
+      isSkipLocked: true
     };
   }
 
   componentDidMount() {
     this.refs['peer_info'].scrollLeft = this.refs['peer_info'].scrollWidth;
+
+    this.unlockSkipTimer = setTimeout(() => {
+      this.setState({isSkipLocked: false});
+    }, 3000);
   }
 
   componentWillUnmount() {
+    clearTimeout(this.unlockSkipTimer);
     clearTimeout(this.unlockSendTimer);
   }
 
@@ -39,6 +45,11 @@ export default class Chat extends Component {
     const wrapClassName = utils.classNames({
       Chat__wrap: true,
       focused: this.state.isFocused
+    });
+
+    const skipBtnClassNames = utils.classNames({
+      'Chat__send-from__skip_button': true,
+      locked: this.state.isSkipLocked
     });
 
     return (
@@ -74,7 +85,7 @@ export default class Chat extends Component {
         <div className="Chat__send-from">
           <div className="Chat__send-from__cont">
             {this._renderSuggestions()}
-            <div className="Chat__send-from__skip_button" onClick={this.props.skip}>
+            <div className={skipBtnClassNames} onClick={this.props.skip}>
               <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.755 17A8 8 0 0 0 20 12v-1.5m-2.19-4A8 8 0 0 0 4 12v1.5m0 0L6.5 11M4 13.5L1.5 11m18.5-.5l2.5 2.5M20 10.5L17.5 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </div>
             <div className="Chat__send-from__input_wrap">
