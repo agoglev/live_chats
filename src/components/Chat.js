@@ -51,7 +51,7 @@ export default class Chat extends Component {
                 {this.props.state.user.photos.length > 0 && <div className={photosClassName}>
                   {this._renderPhotos()}
                 </div>}
-                <div className="Chat__peer_info_cont" style={{width: `${window.innerWidth - 152}px`}}>
+                <div className="Chat__peer_info_cont" style={{width: `${Math.min(560, window.innerWidth) - 152}px`}}>
                   <div className="Chat__name">{this.props.state.user.name}</div>
                   <div className="Chat__caption">{this._makeDescription()}</div>
                 </div>
