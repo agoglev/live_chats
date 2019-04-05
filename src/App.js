@@ -295,10 +295,10 @@ class App extends Component {
         this.setState({status: Status.connecting});
         this.checkChatsTimer = setTimeout(this._checkChats, 7000);
       } else {
-        this.checkChatsTimer = setTimeout(this._checkChats, 4000);
+        this.checkChatsTimer = setTimeout(this._checkChats, 2000);
       }
     }).catch(() => {
-      this.checkChatsTimer = setTimeout(this._checkChats, 4000);
+      this.checkChatsTimer = setTimeout(this._checkChats, 3000);
     });
   };
 
@@ -352,7 +352,7 @@ class App extends Component {
   };
 
   _checkEventDidReceive(fromId) {
-    if (this.state.status === Status.loading) {
+    if (this.state.status === Status.loading || this.state.status === Status.leave) {
       clearTimeout(this.checkChatsTimer);
       this.connectingChatId = fromId;
       this.setState({status: Status.connecting});
