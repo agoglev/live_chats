@@ -18,9 +18,30 @@ body {
 :root {
   --accent: #5050E6;
   --background-color: #fff;
+  --background-grey: #F0F2F5;
   --text-primary: #000;
   --text-secondary: #8994A3;
   --text-primary-contrast: #fff;
+}
+
+.Slider__dragger::before {
+  background: linear-gradient(178.89deg, #AA61F2 0%, #675CE6 100%, #5050E6 100%) !important;
+}
+
+.Slider--ios .Slider__thumb, .Slider--android .Slider__thumb::before {
+  border: 0.5px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08) !important;
+}
+
+.Slider--android .Slider__thumb::before {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 14px;
+  top: -1px !important;
+}
+
+.Slider::before {
+  background-color: var(--background-grey) !important;
 }
 
 div, span, body {
@@ -234,11 +255,15 @@ div, span, body {
 }
 
 .Page__wrap {
-  margin-top: 47px;
-  margin-top: ~"calc(env(safe-area-inset-top) + 47px)";
+  max-width: 560px;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  padding-top: 47px;
+  padding-top: ~"calc(env(safe-area-inset-top) + 47px)";
 
   .App.android & {
-    margin-top: 56px;
-    margin-top: ~"calc(env(safe-area-inset-top) + 56px)";
+    padding-top: 56px;
+    padding-top: ~"calc(env(safe-area-inset-top) + 56px)";
   }
 }

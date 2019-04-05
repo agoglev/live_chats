@@ -2,10 +2,19 @@
   padding: 16px 0;
 }
 .Settings__row {
-  display: block;
   text-decoration: none !important;
   padding: 14px 16px;
   color: var(--text_primary);
   font-size: 16px;
   line-height: 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.Settings__row__icon {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  margin-right: 16px;
+  color: var(--text-secondary);
 }

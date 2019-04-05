@@ -5,7 +5,7 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "cross-env HOST=192.168.1.68 PORT=3000 HTTPS=false react-scripts start",
+    "start": "cross-env HOST=192.168.1.68 PORT=3000 HTTPS=true react-scripts start",
     "build": "react-scripts build"
   },
   "keywords": [],
@@ -18,13 +18,14 @@
   },
   "dependencies": {
     "@sentry/browser": "^4.2.0",
-    "@vkontakte/icons": "^1.2.0",
-    "@vkontakte/vkui": "^2.12.5",
+    "@vkontakte/icons": "^1.4.3",
+    "@vkontakte/vkui": "^2.20.0",
     "@vkontakte/vkui-connect": "^1.1.2",
     "@vkontakte/vkui-connect-mock": "^1.0.5",
     "array.prototype.fill": "^1.0.2",
     "blueimp-load-image": "^2.19.0",
     "core-js": "^2.5.7",
+    "eslint-plugin-react": "^7.12.4",
     "event-emitter": "^0.3.5",
     "fbemitter": "^2.1.1",
     "gh-pages": "^2.0.1",

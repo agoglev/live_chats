@@ -135,14 +135,14 @@ export function incrChats(count) {
 }
 
 let vkPayPromise = false;
-export function vkPayRequest(amount, description) {
+export function vkPayRequest() {
   return new Promise((resolve, reject) => {
-    vkPayPromise = {resolve, reject};
-    connect.send('VKWebAppOpenPayForm', {app_id: 6682509, action: 'pay-to-group', params: {
-        group_id: 160479731,
-        amount,
-        description: description + `\nНе меняйте сумму платежа, иначе деньги будут отправлены в пустую!`
-      }});
+    fetch('https://dateapp.ru/api.php?method=roulette_pay')
+      .then(res => res.json())
+      .then((res) => {
+        vkPayPromise = {resolve, reject};
+        connect.send('VKWebAppOpenPayForm', {app_id: 6757551, action: 'pay-to-service', params: res.response});
+      }).catch(() => reject());
   });
 }
 

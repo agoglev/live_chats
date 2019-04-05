@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '@vkontakte/vkui/dist/vkui.css';
 import './style.css';
 import * as api from './services/api';
 import { setEventHandler } from './realtime';
@@ -6,6 +7,7 @@ import * as payment from './payments';
 import Chat from './components/Chat';
 import Rates from './components/Rates';
 import Settings from './components/Settings/Settings';
+import Filters from './components/Filters/Filters';
 import * as utils from './utils';
 import connect from '@vkontakte/vkui-connect';
 
@@ -17,7 +19,8 @@ const Status = {
   leave: 4,
   error: 5,
   payment: 6,
-  settings: 7
+  settings: 7,
+  filters: 8,
 };
 
 let SkipChatUser = {};
@@ -37,6 +40,12 @@ class App extends Component {
       isMultiConnections: false,
       buttonType: '',
       onlineCount: 0,
+      hasPremium: false,
+      filters: {
+        gender: 'all',
+        ageFrom: 14,
+        ageTo: 80
+      },
       /*user: {
         name: 'Test',
         bdate: '31.01.1995',
@@ -96,7 +105,9 @@ class App extends Component {
       case Status.payment:
         return <Rates state={this.state} showOrder={this._showOrder} />;
       case Status.settings:
-        return <Settings />
+        return <Settings showFilters={this.showFilters} />;
+      case Status.filters:
+        return <Filters {...this.state} applyFilters={this.applyFilters} setHashPremium={this.setHashPremium} />;
     }
   }
 
@@ -117,12 +128,13 @@ class App extends Component {
     }
 
     const onlineCount = utils.gram(this.state.onlineCount, ['незнакомец', 'незнакомца', 'незнакомцев']);
+    const wantGram = utils.gram(this.state.onlineCount, ['хочет', 'хотят', 'хотят'], true);
 
     return (
       <div className="Status__wrap">
         <div className="Status__into">
           <div className="Status__into__icon" />
-          <div className="Status__into__caption"><span>{onlineCount}</span> онлайн и хотят пообщаться с тобой. Сыграй в рулетку и зарядись позитивом!</div>
+          <div className="Status__into__caption"><span>{onlineCount}</span> онлайн и {wantGram} пообщаться с тобой. Сыграй в рулетку и зарядись позитивом!</div>
           <div className={buttonClassName} onClick={this._start}>{buttonText}</div>
         </div>
       </div>
@@ -217,7 +229,10 @@ class App extends Component {
         return;
       }
 
-      connect.send('VKWebAppAllowNotifications', {});
+      if (!window.isNotificationsEnabled) {
+        connect.send('VKWebAppAllowNotifications', {});
+        window.isNotificationsEnabled = true;
+      }
       this._checkChats();
     }).catch(() => {
       if (!this.state.status !== Status.loading) {
@@ -244,6 +259,13 @@ class App extends Component {
 
     this.setState({status});
     const info = window.VkInfo;
+
+    let age = 0;
+    const bdExp = String(info.bdate).split('.');
+    if (bdExp.length === 3) {
+      age = utils.getUsrAge(new Date(parseInt(bdExp[2], 10), parseInt(bdExp[1], 10) - 1, parseInt(bdExp[0], 10)) / 1000);
+    }
+
     api.method(api.methods.check, {
       name: info.first_name,
       photos: info.photos.length > 0 ? info.photos : [info.photo_400_orig],
@@ -251,7 +273,11 @@ class App extends Component {
       bdate: info.bdate,
       education: info.university_name,
       city: info.city ? info.city.title : '',
-      group_id: window.GroupId
+      group_id: window.GroupId,
+      age,
+      filter_gender: this.state.filters.gender === 'all' ? 0 : (this.state.filters.gender === 'male' ? 2 : 1),
+      filter_age_from: this.state.filters.ageFrom,
+      filter_age_to: this.state.filters.ageTo
     }).then((resp) => {
       clearTimeout(this.checkChatsTimer);
       if (this.state.status !== status) {
@@ -293,6 +319,9 @@ class App extends Component {
         break;
       case 'typing':
         this._typingEventDidReceive(parseInt(event.fromId, 10));
+        break;
+      case 'filters':
+        this.setState({filters: event.filters, hasPremium: event.hasPremium});
         break;
     }
   };
@@ -459,6 +488,8 @@ class App extends Component {
       return this.state.user.name;
     } else if (this.state.status === Status.settings) {
       return 'Настройки';
+    } else if (this.state.status === Status.filters) {
+      return 'Фильтры';
     }
     return 'Рулетка';
   };
@@ -471,7 +502,7 @@ class App extends Component {
       }
       this.setState({status: Status.nothing});
       this._updateOnline();
-    } else if (this.state.status === Status.settings) {
+    } else if (this.state.status === Status.settings || this.state.status === Status.filters) {
       this.setState({status: Status.nothing});
       this._updateOnline();
     } else if (this.state.status === Status.nothing) {
@@ -485,6 +516,19 @@ class App extends Component {
 
   _updateOnline = () => {
     api.method(api.methods.updateOnline);
+  };
+
+  showFilters = () => {
+    this.setState({status: Status.filters});
+  };
+
+  applyFilters = (filters) => {
+    this.setState({filters});
+    this._start();
+  };
+
+  setHashPremium = () => {
+    this.setState({hasPremium: true});
   };
 }
 

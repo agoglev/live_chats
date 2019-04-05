@@ -31,13 +31,16 @@ if (window.VkToken) {
   window.isDG = false;
 }
 
+window.vkUserId = parseInt(urlParams.get('vk_user_id'), 10);
+window.isNotificationsEnabled = parseInt(urlParams.get('vk_are_notifications_enabled')) || 0;
+
 if (!window.isDG) {
   connect.send('VKWebAppInit', {});
   connect.send('VKWebAppGetUserInfo', {});
 
   connect.subscribe((e) => {
     const data = e.detail.data;
-    console.log(data);
+    console.log(e.detail);
     switch (e.detail.type) {
       case 'VKWebAppAccessTokenReceived':
         api.handleAccessTokenEventSuccess(data.access_token);
@@ -59,7 +62,7 @@ if (!window.isDG) {
         api.handleMethodError(data.error_data);
         break;
       case 'VKWebAppOpenPayFormResult':
-        payments.resolveVkPayRequest(data.result && data.result.status);
+        payments.resolveVkPayRequest(data.status);
         break;
       case 'VKWebAppOpenPayFormFailed':
         payments.resolveVkPayRequest(false);

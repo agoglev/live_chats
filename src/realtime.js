@@ -41,14 +41,14 @@ function connect() {
 
   socket.onclose = () => {
     console.log('closed');
-    if (!closedByClient) {
-      connectionDidClose();
-    }
   };
   socket.onmessage = messageDidReceive;
 
   socket.onerror = function(error) {
     console.log("ws err:", error.message);
+    if (!closedByClient) {
+      connectionDidClose();
+    }
   };
 }
 
