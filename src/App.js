@@ -136,6 +136,13 @@ class App extends Component {
           <div className="Status__into__icon" />
           <div className="Status__into__caption"><span>{onlineCount}</span> онлайн и {wantGram} пообщаться с тобой. Сыграй в рулетку и зарядись позитивом!</div>
           <div className={buttonClassName} onClick={this._start}>{buttonText}</div>
+          <div className="Intro__filters" onClick={this.showFilters}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 15C20.5523 15 21 15.4477 21 16C21 16.5523 20.5523 17 20 17V15ZM4 17C3.44772 17 3 16.5523 3 16C3 15.4477 3.44772 15 4 15V17ZM15 14C15 13.4477 15.4477 13 16 13C16.5523 13 17 13.4477 17 14H15ZM17 18C17 18.5523 16.5523 19 16 19C15.4477 19 15 18.5523 15 18H17ZM20 17H16V15H20V17ZM13 17H4V15H13V17ZM15 16V14H17V16H15ZM17 16V18H15V16H17Z" fill="currentColor"/>
+              <path d="M4 7C3.44772 7 3 7.44772 3 8C3 8.55228 3.44772 9 4 9V7ZM20 9C20.5523 9 21 8.55228 21 8C21 7.44772 20.5523 7 20 7V9ZM9 6C9 5.44772 8.55228 5 8 5C7.44772 5 7 5.44772 7 6H9ZM7 10C7 10.5523 7.44772 11 8 11C8.55228 11 9 10.5523 9 10H7ZM4 9H8V7H4V9ZM11 9H20V7H11V9ZM9 8V6H7V8H9ZM7 8V10H9V8H7Z" fill="currentColor"/>
+            </svg>
+            Фильтр
+          </div>
         </div>
       </div>
     )
@@ -220,7 +227,7 @@ class App extends Component {
         if (!src) {
           continue;
         }
-        photos.push(src);
+        photos.unshift(src);
       }
 
       window.VkInfo.photos = photos;
@@ -290,7 +297,9 @@ class App extends Component {
       } else {
         this.checkChatsTimer = setTimeout(this._checkChats, 4000);
       }
-    }).catch(() => this.setState({status: Status.error}));
+    }).catch(() => {
+      this.checkChatsTimer = setTimeout(this._checkChats, 4000);
+    });
   };
 
   _eventDidReceive = (event) => {

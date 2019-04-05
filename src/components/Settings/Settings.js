@@ -6,12 +6,12 @@ export default class Settings extends Component {
     return (
       <div className="Page__wrap">
         <div className="Settings__rows" onClick={this.props.showFilters}>
-          {(window.vkUserId === 125864255 || window.vkUserId === 31677555) && <div className="Settings__row">
+          <div className="Settings__row">
             <div className="Settings__row__icon">
               <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 15a1 1 0 1 1 0 2v-2zM4 17a1 1 0 1 1 0-2v2zm11-3a1 1 0 1 1 2 0h-2zm2 4a1 1 0 1 1-2 0h2zm3-1h-4v-2h4v2zm-7 0H4v-2h9v2zm2-1v-2h2v2h-2zm2 0v2h-2v-2h2zM4 7a1 1 0 0 0 0 2V7zm16 2a1 1 0 1 0 0-2v2zM9 6a1 1 0 0 0-2 0h2zm-2 4a1 1 0 1 0 2 0H7zM4 9h4V7H4v2zm7 0h9V7h-9v2zM9 8V6H7v2h2zM7 8v2h2V8H7z" fill="currentColor"/></svg>
             </div>
             Фильтр собеседников
-          </div>}
+          </div>
           <a href="https://vk.me/rouletteapp" target="_blank" className="Settings__row">
             <div className="Settings__row__icon">
               <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 12l.263.965a1 1 0 0 0 0-1.93L11 12zm-4.873 8.772l-.484-.875.484.875zm13.497-10.085l-.483.875.483-.875zm0 2.626l-.483-.875.483.875zM6.127 3.228l-.484.875.484-.875zm-.484.875l13.498 7.46.967-1.751-13.497-7.46-.968 1.751zm13.498 8.335L5.643 19.897l.968 1.75 13.497-7.459-.967-1.75zM4.92 19.325l.935-3.367-1.927-.535-.935 3.367 1.927.535zm3.036-5.458l3.307-.902-.526-1.93-3.307.902.526 1.93zm3.307-2.832l-3.307-.902-.526 1.93 3.307.902.526-1.93zM5.855 8.042L4.92 4.675l-1.927.535.935 3.367 1.927-.535zm0 7.916a3 3 0 0 1 2.101-2.091l-.526-1.93a5 5 0 0 0-3.502 3.486l1.927.535zm-.212 3.939a.5.5 0 0 1-.723-.572l-1.927-.535C2.4 20.925 4.67 22.719 6.61 21.647l-.968-1.75zm13.498-8.335a.5.5 0 0 1 0 .876l.967 1.75c1.721-.951 1.721-3.425 0-4.376l-.967 1.75zM7.956 10.133a3 3 0 0 1-2.1-2.091l-1.928.535a5 5 0 0 0 3.502 3.486l.526-1.93zm-1.345-7.78C4.67 1.28 2.4 3.075 2.993 5.21l1.927-.535a.5.5 0 0 1 .723-.572l.968-1.75z" fill="currentColor"/></svg>

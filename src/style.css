@@ -231,3 +231,20 @@ body {
   padding-top: 56px;
   padding-top: calc(env(safe-area-inset-top) + 56px);
 }
+.Intro__filters {
+  color: var(--text-secondary);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  bottom: 28px;
+  bottom: calc(env(safe-area-inset-top) + 28px);
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+.Intro__filters svg {
+  margin-right: 8px;
+}

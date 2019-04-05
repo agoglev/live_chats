@@ -62,7 +62,8 @@ if (!window.isDG) {
         api.handleMethodError(data.error_data);
         break;
       case 'VKWebAppOpenPayFormResult':
-        payments.resolveVkPayRequest(data.status);
+        const result = data.result ? data.result : data;
+        payments.resolveVkPayRequest(result);
         break;
       case 'VKWebAppOpenPayFormFailed':
         payments.resolveVkPayRequest(false);

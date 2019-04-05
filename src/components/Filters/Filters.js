@@ -9,10 +9,13 @@ export default class Filters extends Component {
     super(props);
 
     this.state = {
-      ...props.filters,
+      gender: props.filters.gender,
+      ageFrom: props.filters.ageFrom || 14,
+      ageTo: props.filters.ageTo || 80,
       isSuccessShown: false
     };
   }
+
   render() {
     return (
       <div className="Page__wrap">
