@@ -37,7 +37,7 @@ class App extends Component {
       loadingPayments: false,
       loadingPaymentsFailed: false,
       availChats: 0,
-      status: Status.chat,
+      status: Status.nothing,
       messages: [],
       isMultiConnections: false,
       buttonType: '',
@@ -50,7 +50,7 @@ class App extends Component {
       },
       isPremiumBoxShown: false,
       vkInfo: window.VkInfo,
-      user: {
+      /*user: {
         name: 'Test',
         bdate: '31.01.1995',
         city: 'Moscow',
@@ -59,7 +59,7 @@ class App extends Component {
           'https://sun1-23.userapi.com/c855224/v855224035/166b7/v1gBZcv3o9Y.jpg',
           'https://pp.userapi.com/c851420/v851420808/ed655/btjtdLMkbBM.jpg'
         ]
-      }
+      }*/
     };
   }
 
