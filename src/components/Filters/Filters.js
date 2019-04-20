@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Filters.css';
 import * as utils from '../../utils';
 import * as UI from '@vkontakte/vkui';
-import * as payment from "../../payments";
+import emitter from '../../services/emitter';
 
 export default class Filters extends Component {
   constructor(props) {
@@ -42,7 +42,7 @@ export default class Filters extends Component {
             />
           </div>
           <div className="Filters__button_wrap">
-            <div className="Status__into__button" onClick={this._save}>{this.props.hasPremium ? 'Найти собеседника' : 'Применить за 29 ₽'}</div>
+            <div className="Status__into__button" onClick={this._save}>{this.props.hasPremium ? 'Найти собеседника' : 'Получить VIP и применить'}</div>
           </div>
         </div>
       </div>
@@ -100,15 +100,8 @@ export default class Filters extends Component {
     if (this.props.hasPremium) {
       this.props.applyFilters({...this.state});
     } else {
-      this._pay();
+      emitter.emit('togglePremiumBox', true);
     }
-  };
-
-  _pay = () => {
-    payment.vkPayRequest().then(() => {
-      this.props.setHashPremium();
-      this.setState({isSuccessShown: true});
-    }).catch(() => alert('Ошибка'));
   };
 
   _ageDidChange = ([ageFrom, ageTo]) => {

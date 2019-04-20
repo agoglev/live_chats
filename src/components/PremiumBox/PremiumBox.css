@@ -1,0 +1,193 @@
+.PremiumBox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--background-primary);
+  z-index: 1000;
+}
+.PremiumBox__close {
+  width: 48px;
+  height: 48px;
+  left: 4px;
+  top: 20px;
+  top: env(safe-area-inset-top);
+  color: var(--contrast-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.PremiumBox__header {
+  background: var(--premium-bg) center top no-repeat;
+  width: 100%;
+  height: 292px;
+  position: relative;
+}
+.PremiumBox__user_wrap {
+  position: absolute;
+  top: 52px;
+  top: calc(52px + env(safe-area-inset-top));
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  transform: translateX(-50%);
+}
+.PremiumBox__user {
+  width: 120px;
+  height: 120px;
+  border-radius: 60px;
+  background: no-repeat center / cover;
+}
+.PremiumBox__vip_badge {
+  background: var(--background-primary);
+  border-radius: 14px;
+  height: 28px;
+  padding: 0 16px 0 14px;
+  align-items: center;
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+.PremiumBox__vip_badge__icon {
+  width: 16px;
+  height: 16px;
+}
+.PremiumBox__vip_badge__text {
+  font-size: 14px;
+  line-height: 16px;
+  margin-left: 4px;
+  font-weight: 600;
+  color: #FF9326;
+  background: linear-gradient(to right bottom, #FF9326 0%, #FFCF40 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.PremiumBox__vip__caption {
+  color: var(--contrast-primary);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 32px;
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 280px;
+}
+.PremiumBox__items {
+  width: 100%;
+  max-width: 385px;
+  box-sizing: border-box;
+  padding: 32px;
+  margin: 0 auto;
+}
+.PremiumBox__item {
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+}
+.PremiumBox__item:last-child {
+  margin-bottom: 0;
+}
+.PremiumBox__item__icon {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--contrast-primary);
+}
+.PremiumBox__item__icon.orange {
+  background: linear-gradient(to right bottom, #FFC44D 0%, #FF8040 100%);
+}
+.PremiumBox__item__icon.blue {
+  background: linear-gradient(to right bottom, #5CDAE6 0%, #4C9ED9 100%);
+}
+.PremiumBox__item__icon.green {
+  background: linear-gradient(to right bottom, #99CC66 0%, #56BF56 100%);
+}
+.PremiumBox__item__cont {
+  margin-left: 12px;
+}
+.PremiumBox__item__title {
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--foreground-primary);
+}
+.PremiumBox__item__caption {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--foreground-secondary);
+}
+.PremiumBox__button_wrap {
+  text-align: center;
+}
+.PremiumBox__button_wrap .Status__into__button {
+  margin-top: 0;
+}
+.PremiumBox__success {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.48);
+  z-index: 1000;
+  padding: 32px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.PremiumBox__success .PremiumBox__user_wrap {
+  position: relative;
+  transform: none;
+  left: 0;
+  top: 0;
+  margin: 0 auto;
+}
+.PremiumBox__success .PremiumBox__vip_badge {
+  background: var(--premium-bg);
+}
+.PremiumBox__success .PremiumBox__success__vip_badge__text {
+  font-size: 14px;
+  line-height: 16px;
+  margin-left: 4px;
+  font-weight: 600;
+  color: var(--contrast-primary);
+}
+.PremiumBox__success .PremiumBox__vip_badge__icon {
+  color: var(--contrast-primary);
+}
+.PremiumBox__success_cont {
+  background: var(--background-primary);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.08), 0 4px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 48px 16px;
+  width: 100%;
+  max-width: 350px;
+  box-sizing: border-box;
+  position: relative;
+}
+.PremiumBox__success_title {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 32px;
+  color: var(--foreground-primary);
+  margin-top: 32px;
+  text-align: center;
+}
+.PremiumBox__success_button_wrap {
+  text-align: center;
+  margin-top: 24px;
+}
+.PremiumBox__success_button_wrap .Status__into__button {
+  margin-top: 0;
+}

@@ -1,11 +1,9 @@
 .Filters__wrap {
   padding: 16px;
 }
-
 .Filters__section {
   padding: 14px 0 16px;
 }
-
 .Filters__section__title {
   font-size: 16px;
   line-height: 20px;
@@ -15,7 +13,6 @@
   display: flex;
   align-items: center;
 }
-
 .Filters__section__title__info {
   flex: 1;
   text-align: right;
@@ -24,64 +21,52 @@
   line-height: 18px;
   font-weight: normal;
 }
-
 .Filters__gender__items {
   display: flex;
 }
-
 .Filters__gender__item {
   flex: 1;
   padding: 24px 16px;
   background: var(--background-secondary);
   border-radius: 12px;
   margin-left: 12px;
-
-  &:first-child {
-    margin-left: 0;
-  }
-
-  &.selected {
-    background: var(--accent-gradient);
-  }
 }
-
+.Filters__gender__item:first-child {
+  margin-left: 0;
+}
+.Filters__gender__item.selected {
+  background: var(--accent-gradient);
+}
 .Filters__gender__item_icon {
   margin: 0 auto;
   width: 48px;
   height: 48px;
-  background: no-repeat center/contain;
-
-  &.all {
-    background-image: url('../../asset/gender_any_48.png');
-  }
-
-  &.male {
-    background-image: url('../../asset/gender_male_48.png');
-  }
-
-  &.female {
-    background-image: url('../../asset/gender_female_48.png');
-  }
+  background: no-repeat center / contain;
 }
-
+.Filters__gender__item_icon.all {
+  background-image: url('../../asset/gender_any_48.png');
+}
+.Filters__gender__item_icon.male {
+  background-image: url('../../asset/gender_male_48.png');
+}
+.Filters__gender__item_icon.female {
+  background-image: url('../../asset/gender_female_48.png');
+}
 .Filters__gender__item_name {
   font-size: 14px;
   line-height: 18px;
   color: var(--foreground-primary);
   margin-top: 16px;
   text-align: center;
-
-  .Filters__gender__item.selected & {
-    color: var(--contrast-primary);
-  }
 }
-
+.Filters__gender__item.selected .Filters__gender__item_name {
+  color: var(--contrast-primary);
+}
 .Filters__button_wrap {
   margin-top: 32px;
   text-align: center;
-
-  .Status__into__button {
-    margin-top: 0;
-    display: block;
-  }
+}
+.Filters__button_wrap .Status__into__button {
+  margin-top: 0;
+  display: block;
 }

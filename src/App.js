@@ -8,8 +8,10 @@ import Chat from './components/Chat';
 import Rates from './components/Rates';
 import Settings from './components/Settings/Settings';
 import Filters from './components/Filters/Filters';
+import PremiumBox from './components/PremiumBox/PremiumBox';
 import * as utils from './utils';
 import connect from '@vkontakte/vkui-connect';
+import emitter from './services/emitter';
 
 const Status = {
   nothing: 0,
@@ -35,32 +37,46 @@ class App extends Component {
       loadingPayments: false,
       loadingPaymentsFailed: false,
       availChats: 0,
-      status: Status.nothing,
+      status: Status.chat,
       messages: [],
       isMultiConnections: false,
       buttonType: '',
       onlineCount: 0,
-      hasPremium: false,
+      hasPremium: utils.isIOS(),
       filters: {
         gender: 'all',
         ageFrom: 14,
         ageTo: 80
       },
-      /*user: {
+      isPremiumBoxShown: false,
+      vkInfo: window.VkInfo,
+      user: {
         name: 'Test',
         bdate: '31.01.1995',
         city: 'Moscow',
+        isVip: true,
         photos: [
           'https://sun1-23.userapi.com/c855224/v855224035/166b7/v1gBZcv3o9Y.jpg',
           'https://pp.userapi.com/c851420/v851420808/ed655/btjtdLMkbBM.jpg'
         ]
-      }*/
+      }
     };
   }
 
   componentDidMount() {
     setEventHandler(this._eventDidReceive);
     this._loadPayments();
+
+    this.listeners = [];
+    this.listeners.push(emitter.addListener('togglePremiumBox', (shown = false) => this.setState({isPremiumBoxShown: shown})));
+    this.listeners.push(emitter.addListener('vkInfoUpdated', (vkInfo) => this.setState({vkInfo})));
+  }
+
+  componentWillUnmount() {
+    for (let listener of this.listeners) {
+      listener.remove();
+    }
+    this.listeners = [];
   }
 
   render() {
@@ -78,13 +94,14 @@ class App extends Component {
           </div>
         </div>
         {this._renderGetContent()}
+        {this._renderPremium()}
       </div>
     );
   }
 
   _renderGetContent() {
     if (this.state.isMultiConnections) {
-      return this._renderStatusLoading();
+      //return this._renderStatusLoading();
     }
 
     switch (this.state.status) {
@@ -169,16 +186,7 @@ class App extends Component {
         <div className={`Status__loading ${className}`}>
           <div className="Status__loading__icon">
             <div className="Status__loading__indicator">
-              <svg width="104" height="104" viewBox="0 0 104 104" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0C6.82874 0 13.5906 1.34502 19.8995 3.95827C26.2085 6.57151 31.9409 10.4018 36.7696 15.2304C41.5982 20.0591 45.4285 25.7915 48.0417 32.1005C50.655 38.4094 52 45.1713 52 52H49.998C49.998 45.4342 48.7048 38.9326 46.1921 32.8666C43.6795 26.8006 39.9967 21.2888 35.3539 16.6461C30.7112 12.0033 25.1994 8.3205 19.1334 5.80787C13.0674 3.29523 6.56583 2.002 0 2.002V0Z" fill="url(#paint0_linear)"/>
-                <defs>
-                  <linearGradient id="paint0_linear" x1="-52" y1="104" x2="52" y2="0" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#AA61F2"/>
-                    <stop offset="1" stopColor="#675CE6"/>
-                    <stop offset="1" stopColor="#5050E6"/>
-                  </linearGradient>
-                </defs>
-              </svg>
+              <svg width="104" height="104" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 0a52 52 0 0 1 52 52h-2.002A49.997 49.997 0 0 0 0 2.002V0z" fill="currentColor"/><defs><linearGradient id="paint0_linear" x1="-52" y1="104" x2="52" gradientUnits="userSpaceOnUse"><stop/><stop offset="1"/><stop offset="1"/></linearGradient></defs></svg>
             </div>
           </div>
           <div className="Status__loading__title">{title}</div>
@@ -330,7 +338,7 @@ class App extends Component {
         this._typingEventDidReceive(parseInt(event.fromId, 10));
         break;
       case 'filters':
-        this.setState({filters: event.filters, hasPremium: event.hasPremium});
+        this.setState({filters: event.filters, hasPremium: event.hasPremium || utils.isIOS()});
         break;
     }
   };
@@ -472,9 +480,7 @@ class App extends Component {
     let icon;
     if (this.state.status === Status.nothing) {
       icon = (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5.70711 4.29289C5.31658 3.90237 4.68342 3.90237 4.29289 4.29289C3.90237 4.68342 3.90237 5.31658 4.29289 5.70711L5.70711 4.29289ZM6.29289 7.70711C6.68342 8.09763 7.31658 8.09763 7.70711 7.70711C8.09763 7.31658 8.09763 6.68342 7.70711 6.29289L6.29289 7.70711ZM5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11V13ZM2 11C1.44772 11 1 11.4477 1 12C1 12.5523 1.44772 13 2 13V11ZM4.29289 18.2929C3.90237 18.6834 3.90237 19.3166 4.29289 19.7071C4.68342 20.0976 5.31658 20.0976 5.70711 19.7071L4.29289 18.2929ZM7.70711 17.7071C8.09763 17.3166 8.09763 16.6834 7.70711 16.2929C7.31658 15.9024 6.68342 15.9024 6.29289 16.2929L7.70711 17.7071ZM13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19H13ZM11 22C11 22.5523 11.4477 23 12 23C12.5523 23 13 22.5523 13 22H11ZM18.2929 19.7071C18.6834 20.0976 19.3166 20.0976 19.7071 19.7071C20.0976 19.3166 20.0976 18.6834 19.7071 18.2929L18.2929 19.7071ZM17.7071 16.2929C17.3166 15.9024 16.6834 15.9024 16.2929 16.2929C15.9024 16.6834 15.9024 17.3166 16.2929 17.7071L17.7071 16.2929ZM22 13C22.5523 13 23 12.5523 23 12C23 11.4477 22.5523 11 22 11V13ZM19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13V11ZM19.7071 5.70711C20.0976 5.31658 20.0976 4.68342 19.7071 4.29289C19.3166 3.90237 18.6834 3.90237 18.2929 4.29289L19.7071 5.70711ZM16.2929 6.29289C15.9024 6.68342 15.9024 7.31658 16.2929 7.70711C16.6834 8.09763 17.3166 8.09763 17.7071 7.70711L16.2929 6.29289ZM13 2C13 1.44772 12.5523 1 12 1C11.4477 1 11 1.44772 11 2H13ZM11 5C11 5.55228 11.4477 6 12 6C12.5523 6 13 5.55228 13 5H11ZM12 20C16.4183 20 20 16.4183 20 12H18C18 15.3137 15.3137 18 12 18V20ZM4 12C4 16.4183 7.58172 20 12 20V18C8.68629 18 6 15.3137 6 12H4ZM12 4C7.58172 4 4 7.58172 4 12H6C6 8.68629 8.68629 6 12 6V4ZM20 12C20 7.58172 16.4183 4 12 4V6C15.3137 6 18 8.68629 18 12H20ZM4.29289 5.70711L6.29289 7.70711L7.70711 6.29289L5.70711 4.29289L4.29289 5.70711ZM5 11H2V13H5V11ZM5.70711 19.7071L7.70711 17.7071L6.29289 16.2929L4.29289 18.2929L5.70711 19.7071ZM11 19V22H13V19H11ZM19.7071 18.2929L17.7071 16.2929L16.2929 17.7071L18.2929 19.7071L19.7071 18.2929ZM22 11H19V13H22V11ZM18.2929 4.29289L16.2929 6.29289L17.7071 7.70711L19.7071 5.70711L18.2929 4.29289ZM11 2V5H13V2H11Z" fill="currentColor"/>
-        </svg>
+        <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
       )
     } else {
       icon = (
@@ -539,6 +545,14 @@ class App extends Component {
   setHashPremium = () => {
     this.setState({hasPremium: true});
   };
+
+  _renderPremium() {
+    if (!this.state.isPremiumBoxShown) {
+      return null;
+    }
+
+    return <PremiumBox state={this.state} setHashPremium={this.setHashPremium} />;
+  }
 }
 
 export default App;

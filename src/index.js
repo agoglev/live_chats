@@ -10,6 +10,7 @@ import realtime from './realtime';
 import * as utils from './utils';
 import * as api from './services/api';
 import * as payments from './payments';
+import emitter from './services/emitter';
 
 const href = window.location.href;
 const hashIndex = href.indexOf('#');
@@ -51,6 +52,7 @@ if (!window.isDG) {
         break;
       case 'VKWebAppGetUserInfoResult':
         window.VkInfo = data;
+        emitter.emit('vkInfoUpdated', data);
         break;
       case 'VKWebAppGetUserInfoFailed':
         //
@@ -68,12 +70,16 @@ if (!window.isDG) {
       case 'VKWebAppOpenPayFormFailed':
         payments.resolveVkPayRequest(false);
         break;
+      case 'VKWebAppUpdateConfig':
+        document.body.setAttribute('scheme', data.scheme);
+        break;
       default:
         console.log(e.detail.type);
     }
   });
 
   connect.send('VKWebAppSetViewSettings', {status_bar_style: 'dark', action_bar_color: "#fff"});
+  connect.send('VKWebAppGetUserInfo', {});
 
   ReactDOM.render(<App/>, document.getElementById('root'));
   realtime();

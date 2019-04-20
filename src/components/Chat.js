@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './Chat.css';
 import * as utils from '../utils';
 import * as api from "../services/api";
+import SVG from 'react-inlinesvg';
+import emitter from "../services/emitter";
 
 export default class Chat extends Component {
   constructor() {
@@ -65,6 +67,9 @@ export default class Chat extends Component {
                 <div className="Chat__peer_info_cont" style={{width: `${Math.min(560, window.innerWidth) - 152}px`}}>
                   <div className="Chat__name">{this.props.state.user.name}</div>
                   <div className="Chat__caption">{this._makeDescription()}</div>
+                  {this.props.state.user.isVip && <div className="Chat__vip" onClick={this._vipDidPress}>
+                    <SVG src={require('../asset/vip_badge.svg')} />
+                  </div>}
                 </div>
               </div>
             </div>
@@ -320,5 +325,13 @@ export default class Chat extends Component {
         </div>
       </div>
     )
+  };
+
+  _vipDidPress = () => {
+    if (this.props.state.hasPremium) {
+      return;
+    }
+
+    emitter.emit('togglePremiumBox', true);
   };
 }

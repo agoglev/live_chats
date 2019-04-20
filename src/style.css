@@ -1,3 +1,24 @@
+:root {
+  --background-primary: #fff;
+  --background-secondary: #fff;
+  --background-tertiary: #F0F2F5;
+  --foreground-primary: #000;
+  --foreground-secondary: #8994A3;
+  --contrast-primary: #fff;
+  --accent: #6950E5;
+  --accent-gradient: linear-gradient(to right bottom, #AA61F2 0%, #675CE6 100%);
+  --premium-bg: url('asset/subscription_header_light.svg');
+}
+body[scheme="client_dark"] {
+  --background-primary: #15181F;
+  --background-secondary: #232833;
+  --background-tertiary: #232833;
+  --background-inverted: #15181F;
+  --foreground-primary: #fff;
+  --foreground-secondary: #5D667A;
+  --contrast-primary: #fff;
+  --premium-bg: url('asset/subscription_header_dark.svg');
+}
 body,
 input,
 textarea {
@@ -8,20 +29,17 @@ body {
   padding: 0;
   margin: 0;
   overflow-y: scroll;
+  background: var(--background-primary);
+  color: var(--foreground-primary);
 }
 * {
   -webkit-tap-highlight-color: transparent;
 }
-:root {
-  --accent: #5050E6;
-  --background-color: #fff;
-  --background-grey: #F0F2F5;
-  --text-primary: #000;
-  --text-secondary: #8994A3;
-  --text-primary-contrast: #fff;
+.isvg {
+  display: flex;
 }
 .Slider__dragger::before {
-  background: linear-gradient(178.89deg, #AA61F2 0%, #675CE6 100%, #5050E6 100%) !important;
+  background: var(--accent-gradient);
 }
 .Slider--ios .Slider__thumb,
 .Slider--android .Slider__thumb::before {
@@ -35,7 +53,7 @@ body {
   top: -1px !important;
 }
 .Slider::before {
-  background-color: var(--background-grey) !important;
+  background-color: var(--background-tertiary) !important;
 }
 div,
 span,
@@ -76,12 +94,13 @@ body {
   position: absolute;
   top: 0;
   left: 50%;
+  color: var(--accent);
 }
 .Status__loading__icon {
   width: 120px;
   height: 120px;
   box-shadow: 0 4px 32px rgba(0, 0, 0, 0.08), 0 4px 4px rgba(0, 0, 0, 0.08);
-  background: url('asset/hand_searching_72.png') no-repeat center / contain;
+  background: var(--background-secondary) url('asset/hand_searching_72.png') no-repeat center / contain;
   background-size: 72px;
   position: relative;
   margin: 0 auto;
@@ -104,7 +123,7 @@ body {
 .Status__loading__title {
   font-size: 20px;
   line-height: 32px;
-  color: #000;
+  color: var(--foreground-primary);
   margin-top: 24px;
   font-weight: 600;
 }
@@ -115,26 +134,13 @@ body {
   margin-top: 4px;
   text-align: center;
 }
-.Status__button {
-  color: #d96289;
-  font-size: 15px;
-  font-weight: bold;
-  line-height: 20px;
-  background: #ffff;
-  border-radius: 20px;
-  padding: 10px 24px;
-  margin-top: 16px;
-  cursor: pointer;
-  flex: 0 0 auto;
-  display: inline-block;
-}
 .App__header {
   width: 100%;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 500;
-  background: #fff;
+  background: var(--background-secondary);
   padding-top: env(safe-area-inset-top);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
 }
@@ -162,15 +168,10 @@ body {
 .App__header__logo {
   font-size: 16px;
   line-height: 20px;
-  color: #000;
+  color: var(--foreground-primary);
   flex: 1;
   margin-left: 8px;
   font-weight: 600;
-}
-.App__header__balance {
-  color: #a8a8a8;
-  font-size: 15px;
-  line-height: 20px;
 }
 .Status__into {
   text-align: center;
@@ -202,7 +203,7 @@ body {
   color: #fff;
   padding: 14px 36px;
   border-radius: 31px;
-  background: linear-gradient(159.59deg, #AA61F2 0%, #675CE6 100%, #5050E6 100%);
+  background: var(--accent-gradient);
   margin-top: 32px;
   transition: all 150ms ease-in-out;
   display: inline-block;
@@ -232,7 +233,7 @@ body {
   padding-top: calc(env(safe-area-inset-top) + 56px);
 }
 .Intro__filters {
-  color: var(--text-secondary);
+  color: var(--foreground-secondary);
   font-size: 16px;
   line-height: 20px;
   font-weight: 600;

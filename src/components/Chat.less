@@ -62,10 +62,9 @@
 }
 
 .Chat__caption {
-  color: rgba(0,0,0,.48);
   font-size: 16px;
   line-height: 24px;
-  color: #8994A3;
+  color: var(--foreground-secondary);
 }
 
 .Chat__photos {
@@ -135,8 +134,8 @@
   font-size: 16px;
   line-height: 20px;
   padding: 8px 16px;
-  background: linear-gradient(170.45deg, #AA61F2 0%, #675CE6 100%, #5050E6 100%);
-  color: #fff;
+  background: var(--accent-gradient);
+  color: var(--contrast-primary);
   border-radius: 18px;
   user-select: auto;
 
@@ -145,20 +144,8 @@
   }
 
   .Chat__message.inbox & {
-    background: #F0F2F5;
-    color: #000;
-  }
-
-  .Chat__message.system & {
-    background: #fff;
-    color: rgba(0,0,0,0.48);
-    border: 1px dashed rgba(0, 0, 0, 0.16);
-
-    svg {
-      display: inline-block;
-      vertical-align: top;
-      opacity: 0.48;
-    }
+    background: var(--background-tertiary);
+    color: var(--foreground-primary);
   }
 }
 
@@ -167,7 +154,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background: #fff;
+  background: var(--background-secondary);
   box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.08);
 }
 
@@ -199,11 +186,11 @@
 
 .Chat__send-from__input {
   border: 0;
-  background: #F0F2F5;
+  background: var(--background-tertiary);
   border-radius: 18px;
   height: 36px;
   outline: none;
-  color: #1a1a1a;
+  color: var(--foreground-primary);
   padding: 8px 16px;
   box-sizing: border-box;
   width: 100%;
@@ -212,14 +199,14 @@
   line-height: 20px;
 
   &::placeholder {
-    color: #8994A3;
+    color: var(--foreground-secondary);
   }
 }
 
 .Chat__send-from__send-button {
   width: 48px;
   height: 48px;
-  color: #8994A3;
+  color: var(--foreground-secondary);
   cursor: pointer;
   transition: opacity 150ms ease-in-out;
   display: flex;
@@ -250,7 +237,7 @@
   justify-content: center;
   width: 48px;
   height: 48px;
-  color: #8994A3;
+  color: var(--foreground-secondary);
 
   &.locked {
     pointer-events: none;
@@ -269,7 +256,7 @@
   width: 100%;
   height: 100%;
   z-index: 1000;
-  background: #fff;
+  background: var(--background-primary);
   padding: 16px;
   box-sizing: border-box;
   display: flex;
@@ -306,7 +293,7 @@
   vertical-align: top;
   width: 8px;
   height: 8px;
-  background-color: #8994A3;
+  background-color: var(--foreground-secondary);
   border-radius: 50%;
   margin-right: 6px;
   opacity: 0.2;
@@ -341,7 +328,7 @@
 }
 
 .Chat_suggestions {
-  background: var(--background-color);
+  background: var(--background-secondary);
   box-shadow: 0 4px 32px rgba(0, 0, 0, 0.08), 0 4px 4px rgba(0, 0, 0, 0.08);
   border-radius: 12px;
   position: absolute;
@@ -362,7 +349,7 @@
 }
 
 .Chat_suggestions__info__title {
-  color: var(--text-primary);
+  color: var(--foreground-primary);
   font-size: 16px;
   line-height: 20px;
   font-weight: 600;
@@ -370,7 +357,7 @@
 
 .Chat_suggestions__info__caption {
   margin-top: 4px;
-  color: var(--text-secondary);
+  color: var(--foreground-secondary);
   font-size: 14px;
   line-height: 18px;
   display: flex;
@@ -410,10 +397,10 @@
 }
 
 .Chat_suggestions__message {
-  background: linear-gradient(154.06deg, #AA61F2 0%, #675CE6 100%, #5050E6 100%);
+  background: var(--accent-gradient);
   border-radius: 18px;
   padding: 8px 16px;
-  color: var(--text-primary-contrast);
+  color: var(--contrast-primary);
   font-size: 16px;
   line-height: 20px;
   margin-right: 8px;
@@ -422,4 +409,8 @@
   &:last-child {
     margin-right: 0;
   }
+}
+
+.Chat__vip {
+  margin-top: 12px;
 }
