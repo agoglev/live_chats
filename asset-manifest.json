@@ -1,8 +1,14 @@
 {
-  "main.css": "static/css/main.a288d1bf.css",
-  "main.css.map": "static/css/main.a288d1bf.css.map",
-  "main.js": "static/js/main.fd7e3e7e.js",
-  "main.js.map": "static/js/main.fd7e3e7e.js.map",
+  "main.css": "static/css/main.c31e8c38.css",
+  "main.css.map": "static/css/main.c31e8c38.css.map",
+  "main.js": "static/js/main.5fb26a3e.js",
+  "main.js.map": "static/js/main.5fb26a3e.js.map",
+  "static/media/appearance_24.svg": "static/media/appearance_24.d4fd7e0e.svg",
+  "static/media/back_24.svg": "static/media/back_24.6184b06b.svg",
+  "static/media/community_24.svg": "static/media/community_24.2ff575e7.svg",
+  "static/media/fave_16.svg": "static/media/fave_16.692fa5ac.svg",
+  "static/media/fave_16_white.svg": "static/media/fave_16_white.97fb60ce.svg",
+  "static/media/filter_24.svg": "static/media/filter_24.151039b6.svg",
   "static/media/gender_any_48.png": "static/media/gender_any_48.a7e603d7.png",
   "static/media/gender_female_48.png": "static/media/gender_female_48.a5f86daa.png",
   "static/media/gender_male_48.png": "static/media/gender_male_48.8b253858.png",
@@ -10,5 +16,11 @@
   "static/media/hand_error_72.png": "static/media/hand_error_72.d4cec757.png",
   "static/media/hand_searching_72.png": "static/media/hand_searching_72.39ca4abb.png",
   "static/media/hand_skipped_72.png": "static/media/hand_skipped_72.4d86ad5a.png",
-  "static/media/hand_welcome_72.png": "static/media/hand_welcome_72.6bce0fbf.png"
+  "static/media/hand_welcome_72.png": "static/media/hand_welcome_72.6bce0fbf.png",
+  "static/media/message_24.svg": "static/media/message_24.30191ccb.svg",
+  "static/media/share_24.svg": "static/media/share_24.7939609b.svg",
+  "static/media/star_24.svg": "static/media/star_24.4be34ea9.svg",
+  "static/media/subscription_header_dark.svg": "static/media/subscription_header_dark.d6b249b2.svg",
+  "static/media/subscription_header_light.svg": "static/media/subscription_header_light.8f523995.svg",
+  "static/media/vip_badge.svg": "static/media/vip_badge.1b1e31c9.svg"
 }
