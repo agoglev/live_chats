@@ -1,8 +1,8 @@
 {
   "main.css": "static/css/main.78ca051d.css",
   "main.css.map": "static/css/main.78ca051d.css.map",
-  "main.js": "static/js/main.0e078f7c.js",
-  "main.js.map": "static/js/main.0e078f7c.js.map",
+  "main.js": "static/js/main.9e0b4905.js",
+  "main.js.map": "static/js/main.9e0b4905.js.map",
   "static/media/ads_24.svg": "static/media/ads_24.1b76e161.svg",
   "static/media/appearance_24.svg": "static/media/appearance_24.d4fd7e0e.svg",
   "static/media/back_24.svg": "static/media/back_24.6184b06b.svg",
@@ -20,6 +20,7 @@
   "static/media/hand_skipped_72.png": "static/media/hand_skipped_72.4d86ad5a.png",
   "static/media/hand_welcome_72.png": "static/media/hand_welcome_72.6bce0fbf.png",
   "static/media/like_24.svg": "static/media/like_24.eb1967eb.svg",
+  "static/media/logout_24.svg": "static/media/logout_24.d9fa11bd.svg",
   "static/media/message_24.svg": "static/media/message_24.30191ccb.svg",
   "static/media/message_like.svg": "static/media/message_like.6bfbe2b8.svg",
   "static/media/send_24.svg": "static/media/send_24.a9d807ac.svg",
